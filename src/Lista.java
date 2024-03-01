@@ -81,17 +81,4 @@ public class Lista {
             i = i.getProx();
         }
     }
-
-    public void selecaoDireta(){
-        int posmenor,aux;
-        for(int i=0; i<tl-1;i++){
-            posmenor=i;
-            for(int j=i+1;j<tl;j++)
-                if(vet[j]<vet[posmenor])
-                    posmenor=j;
-            aux=vet[posmenor];
-            vet[posmenor]=vet[i];
-            vet[i]=aux;
-        }
-    }
 }
