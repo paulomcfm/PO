@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Lista {
     private No inicio;
     private No fim;
@@ -34,12 +36,27 @@ public class Lista {
         }
     }
 
+    public void insercaoAleatoria(int qtd){
+        Random random = new Random();
+        for (int i = 0; i < qtd; i++) {
+            No nova = new No(null, random.nextInt(100)+1, inicio);
+            if(inicio==null){
+                inicio = fim =  nova;
+            }
+            else{
+                inicio.setAnt(nova);
+                inicio = nova;
+            }
+        }
+    }
+
     public void exibir(){
         No aux = inicio;
         while(aux!=null){
-            System.out.println(aux.getInfo());
+            System.out.print("| " + aux.getInfo()+" ");
             aux=aux.getProx();
         }
+        System.out.println("|");
     }
 
     public No buscaExaustiva(int info){
@@ -47,6 +64,11 @@ public class Lista {
         while(aux!=null && aux.getInfo()!=info)
             aux=aux.getProx();
         return aux;
+    }
+
+    public No buscaBinaria(int chave, No fim){
+
+        return inicio;
     }
 
     public void remover(int info){
@@ -67,7 +89,7 @@ public class Lista {
         }
     }
 
-    public void insercaoDireta(){
+    public void insercaoDireta(){ //inicia i no segundo elemento, enquanto i>0 e aux maior que vet[i-1] vai trocando, dps incrementa i ate tl
         int aux;
         No pos, i=inicio.getProx();
         while (i!=null) {
@@ -79,6 +101,24 @@ public class Lista {
             }
             pos.setInfo(aux);
             i = i.getProx();
+        }
+    }
+
+    public void insercaoBinaria(){
+        int aux;
+        No i=inicio.getProx(),pos,j;
+        while(i!=null){
+            aux=i.getInfo();
+            pos = buscaBinaria(i.getInfo(),i.getAnt());
+            j=i;
+            if(j!=pos) {
+                while (j.getAnt() != pos) {
+                    j.setInfo(j.getAnt().getInfo());
+                    j=j.getAnt();
+                }
+            }
+            j.setInfo(aux);
+            i=i.getProx();
         }
     }
 }

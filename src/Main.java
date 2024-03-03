@@ -1,15 +1,21 @@
 public class Main {
-    public static void main(String[] args) {
+    public static void listas(){
         Lista lista = new Lista();
-        for(int i=0;i<10;i++){
-            lista.inserirInicio(i);
-        }
+        lista.insercaoAleatoria(10);
         lista.exibir();
-        for(int i=0;i<10;i++){
-            lista.remover(i);
-        }
-        //lista.exibir();
-        //lista.remover(5);
+        lista.insercaoDireta();
         lista.exibir();
+    }
+    public static void vetores(){
+        Vetor vetor = new Vetor(10);
+        vetor.preencher();
+        vetor.exibir();
+        vetor.insercaoBinaria();
+        vetor.exibir();
+    }
+    public static void main(String[] args) {
+        //listas();
+        vetores();
+
     }
 }
