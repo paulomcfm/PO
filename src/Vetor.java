@@ -63,7 +63,7 @@ public class Vetor {
         }
     }
 
-    public void selecaoDireta(){
+    public void selecaoDireta(){ // posiciona no primeiro elemento e anda do segundo até o final salvando a pos do menor, dps troca
         int posmenor,aux;
         for(int i=0; i<TL-1;i++){
             posmenor=i;
@@ -76,7 +76,24 @@ public class Vetor {
         }
     }
 
-    public void shake(){
+    public void bubble(){ //define um TL2 e vai trocando i com os vizinhos até TL2=1 ou nao trocou
+        int TL2=TL-1,aux;
+        boolean troca=true;
+        while(TL2>1 && troca){
+            troca=false;
+            for(int i=0;i<TL2;i++){
+                if(vet[i]>vet[i+1]){
+                    troca=true;
+                    aux=vet[i];
+                    vet[i]=vet[i+1];
+                    vet[i+1]=aux;
+                }
+            }
+            TL2--;
+        }
+    }
+
+    public void shake(){ //define ini=0 e fim=tl-1, enquanto ini<fim anda jogando os maiores pra direta e decrementa o fim, dps anda jogando menores pra esquerda e decrementa ini
         int aux, inicio=0, fim=TL-1;
         boolean troca=true;
         while(inicio < fim && troca){

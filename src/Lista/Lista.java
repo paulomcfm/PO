@@ -68,9 +68,40 @@ public class Lista {
         return aux;
     }
 
-    public No buscaBinaria(int chave, No fim){
-
+    public int conta(No primeira, No ultima){
+        int i=0;
+        No aux=primeira;
+        while(aux!=ultima){
+            aux = aux.getProx();
+            i++;
+        }
+        return i;
+    }
+    public No posiciona(No inicio, int meio){
+        for(int i=0; i<meio; i++){
+            inicio=inicio.getProx();
+        }
         return inicio;
+    }
+
+    public No buscaBinaria(int chave, No ultima){
+        int intIni=0, intFim=conta(this.inicio,ultima.getAnt()), intMeio=intFim/2;
+        No noIni=inicio, noFim=ultima.getAnt(), noMeio=posiciona(noIni,intMeio);
+        while(intIni<intFim && chave!=noMeio.getInfo()){
+            if(chave>noMeio.getInfo()){
+                noIni=noMeio.getProx();
+                intIni=intMeio+1;
+            }
+            else{
+                noFim=noMeio.getAnt();
+                intFim=intMeio-1;
+            }
+            noMeio=posiciona(noIni,conta(noIni,noFim)/2);
+        }
+        if(chave>noMeio.getInfo()){
+            return noMeio.getProx();
+        }
+        return noMeio;
     }
 
     public void remover(int info){
@@ -111,13 +142,11 @@ public class Lista {
         No i=inicio.getProx(),pos,j;
         while(i!=null){
             aux=i.getInfo();
-            pos = buscaBinaria(i.getInfo(),i.getAnt());
+            pos = buscaBinaria(aux,i);
             j=i;
-            if(j!=pos) {
-                while (j.getAnt() != pos) {
-                    j.setInfo(j.getAnt().getInfo());
-                    j=j.getAnt();
-                }
+            while (j != pos) {
+                j.setInfo(j.getAnt().getInfo());
+                j=j.getAnt();
             }
             j.setInfo(aux);
             i=i.getProx();
