@@ -1,3 +1,5 @@
+package Lista;
+
 import java.util.Random;
 
 public class Lista {

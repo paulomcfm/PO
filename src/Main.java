@@ -1,3 +1,6 @@
+import Arquivo.Arquivo_Java;
+import Lista.Lista;
+
 public class Main {
     public static void listas(){
         Lista lista = new Lista();
@@ -12,6 +15,11 @@ public class Main {
         vetor.exibir();
         vetor.insercaoBinaria();
         vetor.exibir();
+    }
+
+    public static void arquivos(){
+        Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
+        arq.executa();
     }
     public static void main(String[] args) {
         //listas();
