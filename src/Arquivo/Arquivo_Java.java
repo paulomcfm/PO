@@ -1,7 +1,11 @@
 package Arquivo;
 
+import Lista.No;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Random;
 
 //... classe Arquivo (onde vai estar o m�todo para ordernar, etc) ....
 public class Arquivo_Java {
@@ -10,6 +14,10 @@ public class Arquivo_Java {
 
     public Arquivo_Java(String nomearquivo) {
         try {
+            File file = new File(nomearquivo);
+            if (file.exists()) {
+                file.delete(); // Exclui o arquivo se ele existir
+            }
             arquivo = new RandomAccessFile(nomearquivo, "rw");
         } catch (IOException e) {
         }
@@ -93,6 +101,98 @@ public class Arquivo_Java {
         leArq();
         exibirArq();
     }
+    public void preenche(int qtd) {
+        Random random = new Random();
+        Registro reg = new Registro();
+        for(int i = 0; i < qtd; i++){
+            int codigo = random.nextInt(2000) + 1; // Gera um número aleatório entre 1 e 2000
+            String nome = "Nome" + codigo; // Exemplo simples de nome, você pode modificar conforme necessário
+            int idade = random.nextInt(101); // Gera um número aleatório entre 0 e 100 para idade
+            inserirRegNoFinal(new Registro(codigo, nome, idade));
+        }
+    }
+
+    public void insercaoDireta(){ //inicia i no segundo elemento, enquanto i>0 e aux maior que vet[i-1] vai trocando, dps incrementa i ate tl
+        Registro aux = new Registro();
+        Registro ant = new Registro();
+        Registro atual = new Registro();
+        int pos;
+        for(int i=1;i<filesize();i++){
+            seekArq(i);
+            aux.leDoArq(arquivo);
+            atual=aux;
+            seekArq(i-1);
+            ant.leDoArq(arquivo);
+            pos=i;
+            while(pos>0 && atual.getCodigo()<ant.getCodigo()){
+                seekArq(pos);
+                ant.gravaNoArq(arquivo);
+                seekArq(pos-1);
+                atual.gravaNoArq(arquivo);
+                pos--;
+                if(pos>0){
+                    seekArq(pos);
+                    atual.leDoArq(arquivo);
+                    seekArq(pos-1);
+                    ant.leDoArq(arquivo);
+                }
+            }
+            seekArq(pos);
+            aux.gravaNoArq(arquivo);
+        }
+    }
+
+    public int buscaBinaria(int chave, int tl){
+        int ini=0,fim=tl-1,meio=fim/2;
+        Registro aux= new Registro();
+        seekArq(meio);
+        aux.leDoArq(arquivo);
+        while(ini<fim && chave!=aux.getCodigo()){
+            if(chave>aux.getCodigo()){
+                ini=meio+1;
+            }
+            else{
+                fim=meio-1;
+            }
+            meio=(ini+fim)/2;
+            seekArq(meio);
+            aux.leDoArq(arquivo);
+        }
+        if(chave>aux.getCodigo()){
+            return meio+1;
+        }
+        return meio;
+    }
+    public void insercaoBinaria(){
+        Registro aux = new Registro();
+        Registro atual = new Registro();
+        Registro ant = new Registro();
+        int pos,j;
+        for(int i=1;i<filesize();i++){
+            seekArq(i);
+            aux.leDoArq(arquivo);
+            atual=aux;
+            pos=buscaBinaria(aux.getCodigo(), filesize());
+            seekArq(i-1);
+            ant.leDoArq(arquivo);
+            j=i;
+            while(j>pos){
+                seekArq(j);
+                ant.gravaNoArq(arquivo);
+                seekArq(j-1);
+                atual.gravaNoArq(arquivo);
+                j--;
+                if(j>0){
+                    seekArq(j);
+                    atual.leDoArq(arquivo);
+                    seekArq(j-1);
+                    ant.leDoArq(arquivo);
+                }
+            }
+            seekArq(pos);
+            aux.gravaNoArq(arquivo);
+        }
+    }
 
     public void bolha(){
         Registro reg1 = new Registro();
@@ -117,6 +217,7 @@ public class Arquivo_Java {
         }
     }
 
+
     public void selecaoDireta(){ //posiciona no inicio, vai do segundo ao final procurando um menor, se achar, troca
         int posmenor;
         int tam = filesize();
@@ -124,4 +225,6 @@ public class Arquivo_Java {
             
         }
     }
+
+
 }

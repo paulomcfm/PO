@@ -68,40 +68,31 @@ public class Lista {
         return aux;
     }
 
-    public int conta(No primeira, No ultima){
-        int i=0;
-        No aux=primeira;
-        while(aux!=ultima){
-            aux = aux.getProx();
-            i++;
+    public No posicionaMeio(No ini, No fim){
+        No aux=ini;
+        int i;
+        for(i=1;aux!=fim;i++)
+            aux=aux.getProx();
+        aux=ini;
+        i=(i-1)/2;
+        for(int j=0;j<i;j++){
+            aux=aux.getProx();
         }
-        return i;
-    }
-    public No posiciona(No inicio, int meio){
-        for(int i=0; i<meio; i++){
-            inicio=inicio.getProx();
-        }
-        return inicio;
+        return aux;
     }
 
     public No buscaBinaria(int chave, No ultima){
-        int intIni=0, intFim=conta(this.inicio,ultima.getAnt()), intMeio=intFim/2;
-        No noIni=inicio, noFim=ultima.getAnt(), noMeio=posiciona(noIni,intMeio);
-        while(intIni<intFim && chave!=noMeio.getInfo()){
-            if(chave>noMeio.getInfo()){
-                noIni=noMeio.getProx();
-                intIni=intMeio+1;
-            }
-            else{
-                noFim=noMeio.getAnt();
-                intFim=intMeio-1;
-            }
-            noMeio=posiciona(noIni,conta(noIni,noFim)/2);
+        No ini=inicio, fim=ultima.getAnt(), meio=posicionaMeio(ini,fim);
+        while(ini.getInfo()<fim.getInfo() && chave!=meio.getInfo()){
+            if(chave>meio.getInfo())
+                ini=meio.getProx();
+            else
+                fim=meio.getAnt();
+            meio=posicionaMeio(ini, fim);
         }
-        if(chave>noMeio.getInfo()){
-            return noMeio.getProx();
-        }
-        return noMeio;
+        if(chave>meio.getInfo())
+            return meio.getProx();
+        return meio;
     }
 
     public void remover(int info){

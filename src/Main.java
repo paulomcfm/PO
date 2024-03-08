@@ -24,11 +24,16 @@ public class Main {
 
     public static void arquivos(){
         Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
-        arq.executa();
+        arq.preenche(10);
+        arq.exibirArq();
+        System.out.println("\n");
+        //arq.insercaoDireta();
+        arq.insercaoBinaria();
+        arq.exibirArq();
     }
     public static void main(String[] args) {
-        listas();
+        //listas();
         //vetores();
-
+        arquivos();
     }
 }
