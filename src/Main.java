@@ -19,6 +19,7 @@ public class Main {
         //vetor.selecaoDireta();
         //vetor.bubble();
         //vetor.shake();
+        //vetor.heap();
         vetor.exibir();
     }
 
@@ -33,7 +34,7 @@ public class Main {
     }
     public static void main(String[] args) {
         //listas();
-        //vetores();
-        arquivos();
+        vetores();
+        //arquivos();
     }
 }

@@ -120,4 +120,28 @@ public class Vetor {
             }
         }
     }
+
+    public void heap(){
+        int TL2 = TL,pai,FE, FD, maiorF,aux;
+        while(TL2>1){ //TL/2 = qtd de pais
+            pai=TL2/2-1;
+            while(pai>=0){
+                FE=2*pai+1;
+                FD=FE+1;
+                maiorF=FE;
+                if(FD<TL2 && vet[FD]>vet[FE])
+                    maiorF=FD;
+                if(vet[maiorF]>vet[pai]){
+                    aux=vet[maiorF];
+                    vet[maiorF]=vet[pai];
+                    vet[pai]=aux;
+                }
+                pai--;
+            }
+            aux=vet[TL2-1];
+            vet[TL2-1]=vet[0];
+            vet[0]=aux;
+            TL2--;
+        }
+    }
 }
