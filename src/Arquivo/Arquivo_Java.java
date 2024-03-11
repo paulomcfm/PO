@@ -80,6 +80,7 @@ public class Arquivo_Java {
             i++;
         }
         System.out.print("|");
+        System.out.println("\n");
     }
 
     public void exibirUmRegistro(int pos) {
@@ -291,6 +292,47 @@ public class Arquivo_Java {
                 }
             }
             ini++;
+        }
+    }
+
+    public void heap() {
+        Registro reg1 = new Registro();
+        Registro reg2 = new Registro();
+        int TL = filesize(),  pai, FD, FE, maiorF;
+        while(TL>1){
+            pai=TL/2-1;
+            while(pai>=0){
+                FE=pai*2+1;
+                FD=FE+1;
+                maiorF=FE;
+                seekArq(FE);
+                reg1.leDoArq(arquivo);
+                if(!eof())
+                        reg2.leDoArq(arquivo);
+                if(FD<TL && reg1.getCodigo()<reg2.getCodigo()){
+                    maiorF=FD;
+                }
+                seekArq(maiorF);
+                reg1.leDoArq(arquivo);
+                seekArq(pai);
+                reg2.leDoArq(arquivo);
+                if(reg1.getCodigo()>reg2.getCodigo()){
+                    seekArq(maiorF);
+                    reg2.gravaNoArq(arquivo);
+                    seekArq(pai);
+                    reg1.gravaNoArq(arquivo);
+                }
+                pai--;
+            }
+            seekArq(0);
+            reg1.leDoArq(arquivo);
+            seekArq(TL-1);
+            reg2.leDoArq(arquivo);
+            seekArq(0);
+            reg2.gravaNoArq(arquivo);
+            seekArq(TL-1);
+            reg1.gravaNoArq(arquivo);
+            TL--;
         }
     }
 }

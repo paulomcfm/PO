@@ -150,7 +150,6 @@ public class Vetor {
         while(dist<TL)
             dist=dist*3+1;
         dist=dist/3;
-
         while(dist>0){
             for(i=dist;i<TL;i++){
                 aux=vet[i];

@@ -242,19 +242,30 @@ public class Lista {
             aux=aux.getProx();
         return aux;
     }
+    private boolean filhoDireitaDentro(No FE, No ultima) {
+        No aux;
+        aux=inicio;
+        if(FE!=null){
+            while(aux!=FE && aux!=ultima)
+                aux=aux.getProx();
+            if(aux==FE)
+                return true;
+        }
+        return false;
+    }
     public void heap() {
         No ult = fim;
         No FE, FD;
         No pai;
         No maiorF;
         int aux;
-        while(ult!=inicio.getProx()){
+        while(ult!=inicio){
             pai = posicionaPai(ult);
             while(pai!=null){
                 FE=posicionaFilho(pai, ult);
                 FD=FE.getProx();
                 maiorF=FE;
-                if(FD!=null && FD.getInfo()>FE.getInfo())
+                if(filhoDireitaDentro(FD,ult) && FD.getInfo()>FE.getInfo())
                     maiorF=FD;
                 if(maiorF.getInfo()>pai.getInfo()){
                     aux=pai.getInfo();
@@ -262,17 +273,55 @@ public class Lista {
                     maiorF.setInfo(aux);
                 }
                 pai=pai.getAnt();
-                exibir();
             }
             aux=ult.getInfo();
             ult.setInfo(inicio.getInfo());
             inicio.setInfo(aux);
             ult=ult.getAnt();
-            exibir();
         }
     }
 
+    private int calculaDist() {
+        No aux = inicio;
+        int i;
+        for(i=0; aux!=null;i++)
+            aux=aux.getProx();
+        int dist=1;
+        while(dist<i)
+            dist=dist*3+1;
+        dist=dist/3;
+        return dist;
+    }
+    private No posicionaPont(int pos) {
+        No aux=inicio;
+        for(int i=0;i<pos;i++)
+            aux=aux.getProx();
+        return aux;
+    }
 
+    private int calcPos(No j) {
+        No aux = inicio;
+        int i;
+        for(i=0;aux!=j;i++)
+            i++;
+        return i;
+    }
+    public void shell() {
+        int dist = calculaDist(), aux, posj;
+        No i,j;
+        while(dist>0){
+            i = posicionaPont(dist);
+            while(i!=null){
+                aux=i.getInfo();
+                j=i;
+                posj = calcPos(j);
+                System.out.println(j.getInfo());
+                System.out.println(posj);
+                while(posj-dist>=0 && aux<posicionaPont(posj-dist).getInfo()){
 
-
+                }
+                i=i.getProx();
+            }
+        }
+    }
 }

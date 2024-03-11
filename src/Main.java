@@ -12,6 +12,7 @@ public class Main {
         //vetor.bubble();
         //vetor.shake();
         //vetor.heap();
+//        vetor.shell();
         vetor.exibir();
     }
     public static void listas(){
@@ -23,24 +24,25 @@ public class Main {
         //lista.selecaoDireta();
         //lista.bubble();
         //lista.shake();
-        lista.heap();
+//        lista.heap();
+        lista.shell();
         lista.exibir();
     }
     public static void arquivos(){
         Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
         arq.preencher(10);
         arq.exibirArq();
-        System.out.println("\n");
         //arq.insercaoDireta();
         //arq.insercaoBinaria();
         //arq.selecaoDireta();
         //arq.bubble();
-        //arq.shake();
+//        arq.shake();
+//        arq.heap();
         arq.exibirArq();
     }
     public static void main(String[] args) {
+//        vetores();
         listas();
-        //vetores();
 //        arquivos();
     }
 }
