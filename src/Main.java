@@ -2,14 +2,6 @@ import Arquivo.Arquivo_Java;
 import Lista.Lista;
 
 public class Main {
-    public static void listas(){
-        Lista lista = new Lista();
-        lista.insercaoAleatoria(10);
-        lista.exibir();
-        //lista.insercaoDireta();
-        lista.insercaoBinaria();
-        lista.exibir();
-    }
     public static void vetores(){
         Vetor vetor = new Vetor(10);
         vetor.preencher();
@@ -22,19 +14,33 @@ public class Main {
         //vetor.heap();
         vetor.exibir();
     }
-
+    public static void listas(){
+        Lista lista = new Lista();
+        lista.preencher(10);
+        lista.exibir();
+        //lista.insercaoDireta();
+        //lista.insercaoBinaria();
+        //lista.selecaoDireta();
+        //lista.bubble();
+        //lista.shake();
+        lista.heap();
+        lista.exibir();
+    }
     public static void arquivos(){
         Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
-        arq.preenche(10);
+        arq.preencher(10);
         arq.exibirArq();
         System.out.println("\n");
         //arq.insercaoDireta();
-        arq.insercaoBinaria();
+        //arq.insercaoBinaria();
+        //arq.selecaoDireta();
+        //arq.bubble();
+        //arq.shake();
         arq.exibirArq();
     }
     public static void main(String[] args) {
-        //listas();
-        vetores();
-        //arquivos();
+        listas();
+        //vetores();
+//        arquivos();
     }
 }

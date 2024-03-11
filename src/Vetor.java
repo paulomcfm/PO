@@ -76,7 +76,7 @@ public class Vetor {
         }
     }
 
-    public void bubble(){ //define um TL2 e vai trocando i com os vizinhos até TL2=1 ou nao trocou
+    public void bubble(){ //define um TL2=TL-1 e vai trocando i com os vizinhos até TL2=1 ou nao trocou
         int TL2=TL-1,aux;
         boolean troca=true;
         while(TL2>1 && troca){
@@ -121,7 +121,7 @@ public class Vetor {
         }
     }
 
-    public void heap(){
+    public void heap(){ //TL2=TL, enquanto tl2>1, define pai = tl2/2-1, enquanto pai>=0, ve qual o maior filho, coloca no lugar do pai
         int TL2 = TL,pai,FE, FD, maiorF,aux;
         while(TL2>1){ //TL/2 = qtd de pais
             pai=TL2/2-1;

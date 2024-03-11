@@ -59,16 +59,27 @@ public class Arquivo_Java {
     }
 
     public void exibirArq() {
+//        int i;
+//        Registro aux = new Registro();
+//        seekArq(0);
+//        i = 0;
+//        while (!this.eof()) {
+//            System.out.println("Posicao " + i);
+//            aux.leDoArq(arquivo);
+//            aux.exibirReg();
+//            i++;
+//        }
         int i;
         Registro aux = new Registro();
         seekArq(0);
         i = 0;
         while (!this.eof()) {
-            System.out.println("Posicao " + i);
+            //System.out.println("Posicao " + i);
             aux.leDoArq(arquivo);
-            aux.exibirReg();
+            aux.exibirRegSimplificado();
             i++;
         }
+        System.out.print("|");
     }
 
     public void exibirUmRegistro(int pos) {
@@ -101,7 +112,7 @@ public class Arquivo_Java {
         leArq();
         exibirArq();
     }
-    public void preenche(int qtd) {
+    public void preencher(int qtd) {
         Random random = new Random();
         Registro reg = new Registro();
         for(int i = 0; i < qtd; i++){
@@ -163,6 +174,7 @@ public class Arquivo_Java {
         }
         return meio;
     }
+
     public void insercaoBinaria(){
         Registro aux = new Registro();
         Registro atual = new Registro();
@@ -172,7 +184,7 @@ public class Arquivo_Java {
             seekArq(i);
             aux.leDoArq(arquivo);
             atual=aux;
-            pos=buscaBinaria(aux.getCodigo(), filesize());
+            pos=buscaBinaria(aux.getCodigo(), i);
             seekArq(i-1);
             ant.leDoArq(arquivo);
             j=i;
@@ -193,38 +205,92 @@ public class Arquivo_Java {
             aux.gravaNoArq(arquivo);
         }
     }
-
-    public void bolha(){
+    public void selecaoDireta(){ //posiciona no inicio, vai do segundo ao final procurando um menor, se achar, troca
+        Registro aux = new Registro();
+        Registro menor = new Registro();
+        int posmenor;
+        int tam = filesize();
+        for(int i=0;i<tam-1;i++){
+            posmenor=i;
+            for(int j=i+1;j<tam;j++){
+                seekArq(j);
+                aux.leDoArq(arquivo);
+                seekArq(posmenor);
+                menor.leDoArq(arquivo);
+                if(aux.getCodigo()<menor.getCodigo()){
+                    posmenor=j;
+                }
+            }
+            seekArq(posmenor);
+            menor.leDoArq(arquivo);
+            seekArq(i);
+            aux.leDoArq(arquivo);
+            seekArq(i);
+            menor.gravaNoArq(arquivo);
+            seekArq(posmenor);
+            aux.gravaNoArq(arquivo);
+        }
+    }
+    public void bubble() {
         Registro reg1 = new Registro();
         Registro reg2 = new Registro();
-        int tam = filesize();
+        int tam = filesize()-1;
         boolean troca = true;
 
         while(tam>1 && troca){
             troca=false;
-            for(int i=0;i<tam-1;i++){
+            for(int i=0;i<tam;i++){
                 seekArq(i);
                 reg1.leDoArq(arquivo);
                 reg2.leDoArq(arquivo);
                 if(reg1.getCodigo()>reg2.getCodigo()){
                     seekArq(i);
-                    reg1.gravaNoArq(arquivo);
                     reg2.gravaNoArq(arquivo);
+                    reg1.gravaNoArq(arquivo);
                     troca=true;
                 }
-                tam--;
             }
+            tam--;
         }
     }
 
+    public void shake() {
+        Registro reg1 = new Registro();
+        Registro reg2 = new Registro();
+        int fim = filesize()-1;
+        int ini=0;
+        boolean troca = true;
 
-    public void selecaoDireta(){ //posiciona no inicio, vai do segundo ao final procurando um menor, se achar, troca
-        int posmenor;
-        int tam = filesize();
-        for(int i=0;i<tam-1;i++){
-            
+        while(ini < fim && troca){
+            troca=false;
+            for(int i=ini;i<fim;i++){
+                seekArq(i);
+                reg1.leDoArq(arquivo);
+                reg2.leDoArq(arquivo);
+                if(reg1.getCodigo()>reg2.getCodigo()){
+                    seekArq(i);
+                    reg2.gravaNoArq(arquivo);
+                    reg1.gravaNoArq(arquivo);
+                    troca=true;
+                }
+            }
+            fim--;
+            if(troca){
+                for(int i=fim;i>ini;i--){
+                    seekArq(i);
+                    reg1.leDoArq(arquivo);
+                    seekArq(i-1);
+                    reg2.leDoArq(arquivo);
+                    if(reg1.getCodigo()<reg2.getCodigo()){
+                        seekArq(i);
+                        reg2.gravaNoArq(arquivo);
+                        seekArq(i-1);
+                        reg1.gravaNoArq(arquivo);
+                        troca=true;
+                    }
+                }
+            }
+            ini++;
         }
     }
-
-
 }

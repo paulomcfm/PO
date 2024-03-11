@@ -38,7 +38,7 @@ public class Lista {
         }
     }
 
-    public void insercaoAleatoria(int qtd){
+    public void preencher(int qtd){
         Random random = new Random();
         for (int i = 0; i < qtd; i++) {
             No nova = new No(null, random.nextInt(100)+1, inicio);
@@ -143,4 +143,136 @@ public class Lista {
             i=i.getProx();
         }
     }
+
+    public void selecaoDireta() {
+        No inicio = this.inicio;
+        No aux=inicio;
+        No menor;
+        int troca;
+        while(inicio!=fim){
+            menor=inicio;
+            aux=inicio.getProx();
+            while(aux!=null){
+                if(aux.getInfo()<menor.getInfo()){
+                    menor=aux;
+                }
+                aux=aux.getProx();
+            }
+            troca=inicio.getInfo();
+            inicio.setInfo(menor.getInfo());
+            menor.setInfo(troca);
+            inicio=inicio.getProx();
+        }
+    }
+
+    public void bubble() {
+        No ultima = fim;
+        No aux;
+        int auxi;
+        boolean troca=true;
+        while(ultima!=inicio.getProx() && troca){
+            troca=false;
+            aux=inicio;
+            while(aux!=ultima){
+                if(aux.getInfo()>aux.getProx().getInfo()){
+                    troca=true;
+                    auxi=aux.getInfo();
+                    aux.setInfo(aux.getProx().getInfo());
+                    aux.getProx().setInfo(auxi);
+                }
+                aux=aux.getProx();
+            }
+        }
+        ultima=ultima.getAnt();
+    }
+
+    public void shake() {
+        No ultima= fim;
+        No ini = inicio;
+        No aux;
+        int auxi;
+        boolean troca=true;
+        while(ini!=ultima && troca){
+            troca=false;
+            aux=ini;
+            while(aux!=ultima){
+                if(aux.getInfo()>aux.getProx().getInfo()){
+                    troca=true;
+                    auxi=aux.getInfo();
+                    aux.setInfo(aux.getProx().getInfo());
+                    aux.getProx().setInfo(auxi);
+                }
+                aux=aux.getProx();
+            }
+            ultima=ultima.getAnt();
+            if(troca){
+                aux=ultima;
+                while(aux!=ini){
+                    if(aux.getInfo()<aux.getAnt().getInfo()){
+                        troca=true;
+                        auxi=aux.getInfo();
+                        aux.setInfo(aux.getAnt().getInfo());
+                        aux.getAnt().setInfo(auxi);
+                    }
+                    aux=aux.getAnt();
+                }
+            }
+            ini=ini.getProx();
+        }
+    }
+    private No posicionaPai(No ult) {
+        No aux=inicio;
+        int i;
+        for(i=1;aux!=ult;i++)
+            aux=aux.getProx();
+        i=i/2-1;
+        aux=inicio;
+        for(int j=0;j<i;j++){
+            aux=aux.getProx();
+        }
+        return aux;
+    }
+    private No posicionaFilho(No pai, No ult) {
+        No aux=inicio;
+        int i;
+        for(i=0;aux!=pai;i++)
+            aux=aux.getProx();
+        aux=inicio;
+        for(int j=0;j<i*2+1;j++)
+            aux=aux.getProx();
+        return aux;
+    }
+    public void heap() {
+        No ult = fim;
+        No FE, FD;
+        No pai;
+        No maiorF;
+        int aux;
+        while(ult!=inicio.getProx()){
+            pai = posicionaPai(ult);
+            while(pai!=null){
+                FE=posicionaFilho(pai, ult);
+                FD=FE.getProx();
+                maiorF=FE;
+                if(FD!=null && FD.getInfo()>FE.getInfo())
+                    maiorF=FD;
+                if(maiorF.getInfo()>pai.getInfo()){
+                    aux=pai.getInfo();
+                    pai.setInfo(maiorF.getInfo());
+                    maiorF.setInfo(aux);
+                }
+                pai=pai.getAnt();
+                exibir();
+            }
+            aux=ult.getInfo();
+            ult.setInfo(inicio.getInfo());
+            inicio.setInfo(aux);
+            ult=ult.getAnt();
+            exibir();
+        }
+    }
+
+
+
+
 }

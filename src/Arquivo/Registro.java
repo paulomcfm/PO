@@ -76,6 +76,12 @@ public class Registro
         System.out.println("----------------------------------");
     }
 
+    public void exibirRegSimplificado()
+    {
+        int i;
+        System.out.print("| "+this.codigo+" ");
+    }
+
     static int length()
     {
         return (52); //int codigo, tl=20, idade; ------------> 12 bytes
