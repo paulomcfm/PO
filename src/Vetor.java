@@ -144,4 +144,24 @@ public class Vetor {
             TL2--;
         }
     }
+
+    public void shell(){ //calcula a distancia, enquanto for >0, compara j com j-dist, se for menor troca e j assume j-dist
+        int i,j,aux,dist=1;
+        while(dist<TL)
+            dist=dist*3+1;
+        dist=dist/3;
+
+        while(dist>0){
+            for(i=dist;i<TL;i++){
+                aux=vet[i];
+                j=i;
+                while(j-dist>=0 && aux<vet[j-dist]){
+                    vet[j]=vet[j-dist];
+                    j=j-dist;
+                }
+                vet[j]=aux;
+            }
+            dist=dist/3;
+        }
+    }
 }
