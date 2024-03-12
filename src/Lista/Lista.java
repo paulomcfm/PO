@@ -303,25 +303,29 @@ public class Lista {
         No aux = inicio;
         int i;
         for(i=0;aux!=j;i++)
-            i++;
+            aux=aux.getProx();
         return i;
     }
     public void shell() {
         int dist = calculaDist(), aux, posj;
-        No i,j;
+        No i,j,jdist;
         while(dist>0){
             i = posicionaPont(dist);
             while(i!=null){
                 aux=i.getInfo();
                 j=i;
                 posj = calcPos(j);
-                System.out.println(j.getInfo());
-                System.out.println(posj);
-                while(posj-dist>=0 && aux<posicionaPont(posj-dist).getInfo()){
-
+                jdist = posicionaPont(posj-dist);
+                while(posj-dist>=0 && aux<jdist.getInfo()){
+                    j.setInfo(jdist.getInfo());
+                    j=jdist;
+                    posj = calcPos(j);
+                    jdist = posicionaPont(posj-dist);
                 }
+                j.setInfo(aux);
                 i=i.getProx();
             }
+            dist=dist/3;
         }
     }
 }

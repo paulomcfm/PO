@@ -335,4 +335,36 @@ public class Arquivo_Java {
             TL--;
         }
     }
+
+    public void shell() {
+        Registro reg = new Registro();
+        Registro aux = new Registro();
+        int i,j,dist=1;
+        while(dist<filesize())
+            dist=dist*3+1;
+        dist=dist/3;
+        while(dist>0){
+            for(i=dist;i<filesize();i++){
+                seekArq(i);
+                aux.leDoArq(arquivo);
+                j=i;
+                if(j-dist>=0){
+                    seekArq(j-dist);
+                    reg.leDoArq(arquivo);
+                }
+                while(j-dist>=0 && aux.getCodigo()<reg.getCodigo()){
+                    seekArq(j);
+                    reg.gravaNoArq(arquivo);
+                    j=j-dist;
+                    if(j-dist>=0){
+                        seekArq(j-dist);
+                        reg.leDoArq(arquivo);
+                    }
+                }
+                seekArq(j);
+                aux.gravaNoArq(arquivo);
+            }
+            dist=dist/3;
+        }
+    }
 }

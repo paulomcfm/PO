@@ -25,7 +25,7 @@ public class Main {
         //lista.bubble();
         //lista.shake();
 //        lista.heap();
-        lista.shell();
+//        lista.shell();
         lista.exibir();
     }
     public static void arquivos(){
@@ -38,11 +38,12 @@ public class Main {
         //arq.bubble();
 //        arq.shake();
 //        arq.heap();
+        arq.shell();
         arq.exibirArq();
     }
     public static void main(String[] args) {
 //        vetores();
-        listas();
-//        arquivos();
+//        listas();
+        arquivos();
     }
 }
