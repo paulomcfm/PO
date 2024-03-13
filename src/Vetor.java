@@ -163,4 +163,23 @@ public class Vetor {
             dist=dist/3;
         }
     }
+
+    public void counting(){
+        int maior=vet[0];
+        for(int i=1;i<TL;i++)
+            if(vet[i]>maior)
+                maior=vet[i];
+        int cont[]= new int[maior+1];
+        for(int i=0;i<TL;i++)
+            cont[vet[i]]++;
+        for(int i=1;i<=maior;i++)
+            cont[i]=cont[i-1]+cont[i];
+        int saida[] =new int[TL+1];
+        for(int i=TL-1;i>=0;i--){
+            saida[cont[vet[i]]-1]=vet[i];
+            cont[vet[i]]--;
+        }
+        for(int i=0;i<TL;i++)
+            vet[i]=saida[i];
+    }
 }

@@ -13,6 +13,7 @@ public class Main {
         //vetor.shake();
         //vetor.heap();
 //        vetor.shell();
+        vetor.counting();
         vetor.exibir();
     }
     public static void listas(){
@@ -38,12 +39,12 @@ public class Main {
         //arq.bubble();
 //        arq.shake();
 //        arq.heap();
-        arq.shell();
+//        arq.shell();
         arq.exibirArq();
     }
     public static void main(String[] args) {
-//        vetores();
+        vetores();
 //        listas();
-        arquivos();
+//        arquivos();
     }
 }

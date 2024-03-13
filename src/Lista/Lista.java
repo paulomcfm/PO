@@ -298,29 +298,25 @@ public class Lista {
             aux=aux.getProx();
         return aux;
     }
-
-    private int calcPos(No j) {
-        No aux = inicio;
-        int i;
-        for(i=0;aux!=j;i++)
-            aux=aux.getProx();
-        return i;
+    private No posicionaJDist(No no, int dist){
+        No aux=no;
+        for(int i=0;aux!=null && i<dist;i++)
+            aux=aux.getAnt();
+        return aux;
     }
     public void shell() {
-        int dist = calculaDist(), aux, posj;
+        int dist = calculaDist(), aux;
         No i,j,jdist;
         while(dist>0){
             i = posicionaPont(dist);
             while(i!=null){
                 aux=i.getInfo();
                 j=i;
-                posj = calcPos(j);
-                jdist = posicionaPont(posj-dist);
-                while(posj-dist>=0 && aux<jdist.getInfo()){
+                jdist = posicionaJDist(j,dist);
+                while(jdist!=null && aux<jdist.getInfo()){
                     j.setInfo(jdist.getInfo());
                     j=jdist;
-                    posj = calcPos(j);
-                    jdist = posicionaPont(posj-dist);
+                    jdist = posicionaJDist(j,dist);
                 }
                 j.setInfo(aux);
                 i=i.getProx();
