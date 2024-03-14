@@ -164,7 +164,7 @@ public class Vetor {
         }
     }
 
-    public void counting(){
+    public void counting(){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
         int maior=vet[0];
         for(int i=1;i<TL;i++)
             if(vet[i]>maior)
@@ -174,7 +174,7 @@ public class Vetor {
             cont[vet[i]]++;
         for(int i=1;i<=maior;i++)
             cont[i]=cont[i-1]+cont[i];
-        int saida[] =new int[TL+1];
+        int saida[] =new int[TL];
         for(int i=TL-1;i>=0;i--){
             saida[cont[vet[i]]-1]=vet[i];
             cont[vet[i]]--;

@@ -324,4 +324,70 @@ public class Lista {
             dist=dist/3;
         }
     }
+    private void incrementa(Lista cont, int info) {
+        No aux = cont.inicio;
+        for (int i = 0; i < info; i++) {
+            aux=aux.getProx();
+        }
+        aux.setInfo(aux.getInfo()+1);
+    }
+    private int procuraPosicao(int info, Lista cont) {
+        No aux = cont.inicio;
+        for (int i = 0; i < info; i++)
+            aux=aux.getProx();
+        return aux.getInfo();
+    }
+    private void colocaValor(int possaida, int info, Lista saida) {
+        No aux = saida.inicio;
+        for (int i = 0; i < possaida; i++)
+            aux=aux.getProx();
+        aux.setInfo(info);
+    }
+    public void couting() {
+        No aux = inicio, auxS;
+        Lista cont = new Lista();
+        cont.inicializa();
+        Lista saida = new Lista();
+        saida.inicializa();
+        int maior = aux.getInfo(), info = 0, possaida;
+        aux=aux.getProx();
+        while(aux!=null) {
+            if(aux.getInfo()>maior)
+                maior= aux.getInfo();
+            aux=aux.getProx();
+        }
+        for(int i=0;i<=maior;i++){
+            cont.insercaoFinal(0);
+        }
+        aux=inicio;
+        while(aux!=null){
+            info = aux.getInfo();
+            incrementa(cont,info);
+            aux=aux.getProx();
+        }
+        aux=cont.inicio.getProx();
+        while(aux!=null) {
+            aux.setInfo(aux.getAnt().getInfo() + aux.getInfo());
+            aux = aux.getProx();
+        }
+        aux=inicio;
+        while(aux!=null)
+            saida.insercaoFinal(0);
+        aux=fim;
+        while(aux!=null){
+            possaida = procuraPosicao(aux.getInfo(),cont);
+            colocaValor(possaida-1,aux.getInfo(),saida);
+            aux=aux.getAnt();
+        }
+        aux=inicio;
+        auxS=saida.inicio;
+        while (aux!=null) {
+            aux.setInfo(auxS.getInfo());
+            aux=aux.getProx();
+            auxS=auxS.getProx();
+        }
+    }
+    //Counting Lista -> Para criar uma Lista dentro do obeto Lista, devo criar novos métodos de insercao e inicializacao?
+    //Bucket Sort -> Como determinar a quantidade de baldes e sua range? Procuro o maior?
+    //Tim Sort -> Como determinar a quantidade de grupos e o tamanho deles?
 }
