@@ -387,7 +387,7 @@ public class Lista {
             auxS=auxS.getProx();
         }
     }
-    //Counting Lista -> Para criar uma Lista dentro do obeto Lista, devo criar novos métodos de insercao e inicializacao?
-    //Bucket Sort -> Como determinar a quantidade de baldes e sua range? Procuro o maior?
-    //Tim Sort -> Como determinar a quantidade de grupos e o tamanho deles?
+    //bucket (element-menor*qtdElem-1)/maior-menor (lista vetor de lista e no arq varios arq, qtd de buckets fixa)
+    //counting lista usa vetores de contagem e saida
+    //couting arquivo usa vetores de contagem e arquivo de saida
 }

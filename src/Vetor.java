@@ -182,4 +182,56 @@ public class Vetor {
         for(int i=0;i<TL;i++)
             vet[i]=saida[i];
     }
+
+    public void quickSPivo(){
+        quickSP(0,TL-1);
+    }
+
+    private void quickSP(int ini, int fim) {
+        int i=ini, j=fim,aux;
+        boolean flag=true;
+        while(i<j){
+            if(flag)
+                while(i<j && vet[i]<=vet[j])
+                    i++;
+            else
+                while(i<j && vet[i]<=vet[j])
+                    j--;
+            aux=vet[i]; //em arquivo bota um if aqui vendo se i<j pra n escrever atoa
+            vet[i]=vet[j];
+            vet[j]=aux;
+            flag=!flag;
+        }
+        if(ini<i-1)
+            quickSP(ini,i-1);
+        if(j+1<fim)
+            quickSP(j+1,fim);
+    }
+
+    public void quickCPivo(){
+        quickCP(0,TL-1);
+    }
+
+    private void quickCP(int ini, int fim){
+        int i=ini, j=fim, aux;
+        int pivo=(ini+fim)/2;
+        while(i<j){
+            while(vet[i]<pivo)
+                i++;
+            while(vet[j]>pivo)
+                j--;
+            if(i<=j){
+                aux=vet[i];
+                vet[i]=vet[j];
+                vet[j]=aux;
+                i++;
+                j--;
+            }
+        }
+        if(ini<i)
+            quickCP(ini,j);
+        if(i<fim)
+            quickCP(i, fim);
+    }
+
 }
