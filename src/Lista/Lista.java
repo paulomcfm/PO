@@ -30,14 +30,21 @@ public class Lista {
     public void insercaoFinal(int info){
         No nova = new No(fim, info, null);
         if(fim==null){
-            inicio = fim = null;
+            inicio = fim = nova;
         }
         else{
             fim.setProx(nova);
             fim = nova;
         }
     }
-
+    public No retornaPrimeiro(){
+        return inicio;
+    }
+    public int removePrimeiro() {
+        int i=inicio.getInfo();
+        inicio = inicio.getProx();
+        return i;
+    }
     public void preencher(int qtd){
         Random random = new Random();
         for (int i = 0; i < qtd; i++) {
@@ -324,70 +331,258 @@ public class Lista {
             dist=dist/3;
         }
     }
-    private void incrementa(Lista cont, int info) {
-        No aux = cont.inicio;
-        for (int i = 0; i < info; i++) {
+
+    private int tl() {
+        No aux = inicio;
+        int i=0;
+        while(aux!=null){
             aux=aux.getProx();
+            i++;
         }
-        aux.setInfo(aux.getInfo()+1);
+        return i;
     }
-    private int procuraPosicao(int info, Lista cont) {
-        No aux = cont.inicio;
-        for (int i = 0; i < info; i++)
-            aux=aux.getProx();
-        return aux.getInfo();
-    }
-    private void colocaValor(int possaida, int info, Lista saida) {
-        No aux = saida.inicio;
-        for (int i = 0; i < possaida; i++)
-            aux=aux.getProx();
-        aux.setInfo(info);
-    }
-    public void couting() {
-        No aux = inicio, auxS;
-        Lista cont = new Lista();
-        cont.inicializa();
-        Lista saida = new Lista();
-        saida.inicializa();
-        int maior = aux.getInfo(), info = 0, possaida;
+    public void counting() {
+        No aux = inicio;
+        int j=0;
+        int saida[] = new int[tl()];
+        int maior = aux.getInfo();
         aux=aux.getProx();
         while(aux!=null) {
             if(aux.getInfo()>maior)
                 maior= aux.getInfo();
             aux=aux.getProx();
         }
-        for(int i=0;i<=maior;i++){
-            cont.insercaoFinal(0);
-        }
+        int cont[] = new int[maior+1];
         aux=inicio;
         while(aux!=null){
-            info = aux.getInfo();
-            incrementa(cont,info);
+            cont[aux.getInfo()]++;
             aux=aux.getProx();
         }
-        aux=cont.inicio.getProx();
-        while(aux!=null) {
-            aux.setInfo(aux.getAnt().getInfo() + aux.getInfo());
-            aux = aux.getProx();
-        }
-        aux=inicio;
-        while(aux!=null)
-            saida.insercaoFinal(0);
+        for(int i=1;i<=maior;i++)
+            cont[i]=cont[i-1]+cont[i];
         aux=fim;
         while(aux!=null){
-            possaida = procuraPosicao(aux.getInfo(),cont);
-            colocaValor(possaida-1,aux.getInfo(),saida);
+            saida[cont[aux.getInfo()]-1]=aux.getInfo();
+            cont[aux.getInfo()]--;
             aux=aux.getAnt();
         }
         aux=inicio;
-        auxS=saida.inicio;
         while (aux!=null) {
-            aux.setInfo(auxS.getInfo());
+            aux.setInfo(saida[j]);
             aux=aux.getProx();
-            auxS=auxS.getProx();
+            j++;
         }
     }
-    //bucket (element-menor*qtdElem-1)/maior-menor (lista vetor de lista e no arq varios arq, qtd de buckets fixa)
-    //counting lista usa vetores de contagem e saida
-    //couting arquivo usa vetores de contagem e arquivo de saida
+
+    public void quickSpivo() {
+        quickSP(inicio,fim);
+    }
+
+    private boolean estaAntes(No antes, No dps) {
+        if(antes==dps)
+            return false;
+        while(antes!=dps && antes!=null)
+            antes=antes.getProx();
+        if(antes==dps)
+            return true;
+        return false;
+    }
+    private void quickSP(No ini, No fim) {
+        No i=ini, j=fim;
+        int aux;
+        boolean flag = true;
+        while (i!=j){
+            if(flag)
+                while(i!=j && i.getInfo()<=j.getInfo())
+                    i=i.getProx();
+            else
+                while(i!=j && i.getInfo()<=j.getInfo())
+                    j=j.getAnt();
+            aux=i.getInfo();
+            i.setInfo(j.getInfo());
+            j.setInfo(aux);
+            flag=!flag;
+        }
+        if(estaAntes(ini,i.getAnt()) && i.getAnt()!=null)
+            quickSP(ini,i.getAnt());
+        if(estaAntes(j.getProx(),fim) && j.getProx()!=null)
+            quickSP(j.getProx(),fim);
+    }
+
+    public void quickCpivo() {
+        quickCP(inicio,fim);
+    }
+
+    private int getPivo(No ini, No fim) {
+        No aux = ini;
+        int i=1;
+        while(aux!=fim) {
+            aux = aux.getProx();
+            i++;
+        }
+        int j=0;
+        aux=ini;
+        while(j<i/2){
+            aux=aux.getProx();
+            j++;
+        }
+        return aux.getInfo();
+    }
+    private boolean estaAntesOuIgual(No antes, No dps) {
+        while(antes!=dps && antes!=null)
+            antes=antes.getProx();
+        if(antes==dps)
+            return true;
+        return false;
+    }
+    private void quickCP(No ini, No fim) {
+        No i=ini, j=fim;
+        int pivo = getPivo(ini,fim);
+        int aux;
+        while (estaAntes(i,j)){
+            while(i.getInfo()<pivo)
+                    i=i.getProx();
+            while(j.getInfo()>pivo)
+                    j=j.getAnt();
+            if(estaAntesOuIgual(i,j)) {
+                aux = i.getInfo();
+                i.setInfo(j.getInfo());
+                j.setInfo(aux);
+                i=i.getProx();
+                j=j.getAnt();
+            }
+        }
+        if(estaAntes(ini,i.getAnt()) && i!=null)
+            quickSP(ini,i);
+        if(estaAntes(j.getProx(),fim) && j!=null)
+            quickSP(j,fim);
+    }
+
+
+    public void bucket(int qtd) {
+        No aux= inicio.getProx();
+        int maior= inicio.getInfo(),i,j=0;
+        while(aux!=null){
+            if(aux.getInfo()>maior)
+                maior=aux.getInfo();
+            aux=aux.getProx();
+        }
+        Lista baldes[] = new Lista[qtd];
+        for (i = 0; i < qtd; i++) {
+            baldes[i] = new Lista();
+            baldes[i].inicializa();
+        }
+        aux=inicio;
+        while(aux!=null){
+            baldes[(aux.getInfo()*qtd)/(maior+1)].insercaoFinal(aux.getInfo());
+            aux=aux.getProx();
+        }
+        for (i = 0; i < qtd; i++) {
+            if(baldes[i].retornaPrimeiro()!=null)
+                baldes[i].insercaoDireta();
+        }
+        aux=inicio;
+        while(aux!=null){
+            while(j<qtd && baldes[j].inicio!=null){
+                aux.setInfo(baldes[j].removePrimeiro());
+                aux=aux.getProx();
+            }
+            j++;
+        }
+    }
+    public void countingRadix(int chave) {
+        No aux = inicio;
+        int j=0;
+        int saida[] = new int[tl()];
+        int maior = aux.getInfo();
+        aux=aux.getProx();
+        while(aux!=null) {
+            if(aux.getInfo()>maior)
+                maior= aux.getInfo();
+            aux=aux.getProx();
+        }
+        int cont[] = new int[maior+1];
+        aux=inicio;
+        while(aux!=null){
+            cont[(aux.getInfo()/chave)%10]++;
+            aux=aux.getProx();
+        }
+        for(int i=1;i<=maior;i++)
+            cont[i]=cont[i-1]+cont[i];
+        aux=fim;
+        while(aux!=null){
+            saida[cont[(aux.getInfo()/chave)%10]-1]=aux.getInfo();
+            cont[(aux.getInfo()/chave)%10]--;
+            aux=aux.getAnt();
+        }
+        aux=inicio;
+        while (aux!=null) {
+            aux.setInfo(saida[j]);
+            aux=aux.getProx();
+            j++;
+        }
+    }
+    public void radix() {
+        No aux = inicio;
+        int chave;
+        int maior = aux.getInfo();
+        aux=aux.getProx();
+        while(aux!=null) {
+            if(aux.getInfo()>maior)
+                maior= aux.getInfo();
+            aux=aux.getProx();
+        }
+        for (chave=1; maior/chave>0; chave*=10)
+            countingRadix(chave);
+    }
+
+    private No andaGap(No aux, int gap) {
+        for (int i = 0; aux!=null && i < gap; i++) {
+            aux=aux.getProx();
+        }
+        return aux;
+    }
+    public void comb() {
+        No aux=inicio,agap;
+        int i, gap, iaux;
+        for (i=0;aux!=null;i++)
+            aux=aux.getProx();
+        gap=i;
+        boolean troca=true;
+        while(troca){
+            gap=gap*10/13;
+            if(gap<=1){
+                gap=1;
+                troca=false;
+            }
+            aux=inicio;
+            agap = andaGap(aux, gap);
+            while(agap!=null){
+                if(aux.getInfo()>agap.getInfo()){
+                    iaux=aux.getInfo();
+                    aux.setInfo(agap.getInfo());
+                    agap.setInfo(iaux);
+                }
+                aux=aux.getProx();
+                agap = andaGap(aux, gap);
+            }
+        }
+
+    }
+    public void gnome() {
+        No aux = inicio;
+        int iaux;
+        while(aux!=null){
+            if(aux==inicio)
+                aux=aux.getProx();
+            if(aux.getInfo()>=aux.getAnt().getInfo())
+                aux=aux.getProx();
+            else{
+                iaux=aux.getInfo();
+                aux.setInfo(aux.getAnt().getInfo());
+                aux.getAnt().setInfo(iaux);
+                aux=aux.getAnt();
+            }
+        }
+    }
 }

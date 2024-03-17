@@ -1,5 +1,5 @@
 import java.util.Random;
-
+import Lista.Lista;
 public class Vetor {
     private int[] vet;
     private int TL;
@@ -197,7 +197,7 @@ public class Vetor {
             else
                 while(i<j && vet[i]<=vet[j])
                     j--;
-            aux=vet[i]; //em arquivo bota um if aqui vendo se i<j pra n escrever atoa
+            aux=vet[i];
             vet[i]=vet[j];
             vet[j]=aux;
             flag=!flag;
@@ -214,7 +214,7 @@ public class Vetor {
 
     private void quickCP(int ini, int fim){
         int i=ini, j=fim, aux;
-        int pivo=(ini+fim)/2;
+        int pivo=vet[(ini+fim)/2];
         while(i<j){
             while(vet[i]<pivo)
                 i++;
@@ -234,4 +234,97 @@ public class Vetor {
             quickCP(i, fim);
     }
 
+    public void bucket(int qtd) {
+        int maior=vet[0],i,j;
+        for (i = 1; i < TL; i++) {
+            if(vet[i]>maior)
+                maior=vet[i];
+        }
+        Lista baldes[] = new Lista[qtd];
+        for (i = 0; i < qtd; i++) {
+            baldes[i] = new Lista();
+            baldes[i].inicializa();
+        }
+        for (i = 0; i < TL; i++)
+            baldes[(vet[i]*qtd)/(maior+1)].insercaoFinal(vet[i]);
+        for (i = 0; i < qtd; i++) {
+            if(baldes[i].retornaPrimeiro()!=null)
+                baldes[i].insercaoDireta();
+        }
+        i=0;
+        j=0;
+        while (i < TL) {
+            while(j<qtd && baldes[j].retornaPrimeiro()!=null){
+                vet[i]=baldes[j].removePrimeiro();
+                i++;
+            }
+            j++;
+        }
+    }
+    public void countingRadix(int chave){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
+        int maior=vet[0], index;
+        for(int i=1;i<TL;i++)
+            if(vet[i]>maior)
+                maior=vet[i];
+        int cont[]= new int[maior+1];
+        for(int i=0;i<TL;i++) {
+            index = (vet[i]/chave)%10;
+            cont[index]++;
+        }
+        for(int i=1;i<=maior;i++)
+            cont[i]=cont[i-1]+cont[i];
+        int saida[] =new int[TL];
+        for(int i=TL-1;i>=0;i--){
+            index = (vet[i]/chave)%10;
+            saida[cont[index]-1]=vet[i];
+            cont[index]--;
+        }
+        for(int i=0;i<TL;i++)
+            vet[i]=saida[i];
+    }
+    public void radix() {
+        int maior=vet[0], chave;
+        for (int i = 1; i < TL; i++)
+            if(vet[i]>maior)
+                maior=vet[i];
+        for (chave=1; maior/chave>0; chave*=10)
+            countingRadix(chave);
+    }
+
+    public void comb() {
+        int gap=TL,aux;
+        boolean troca=true;
+        while(troca){
+            gap=gap*10/13;
+            if(gap<=1){
+                gap=1;
+                troca=false;
+            }
+            int i=0;
+            while(i+gap<TL){
+                if(vet[i]>vet[i+gap]){
+                    aux=vet[i+gap];
+                    vet[i+gap]=vet[i];
+                    vet[i]=aux;
+                }
+                i++;
+            }
+        }
+    }
+
+    public void gnome() {
+        int i=0,aux;
+        while(i<TL){
+            if (i==0)
+                i++;
+            if(vet[i]>=vet[i-1])
+                i++;
+            else{
+                aux=vet[i];
+                vet[i]=vet[i-1];
+                vet[i-1]=aux;
+                i--;
+            }
+        }
+    }
 }

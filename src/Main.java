@@ -14,6 +14,12 @@ public class Main {
         //vetor.heap();
 //        vetor.shell();
 //        vetor.counting();
+//        vetor.quickSPivo();
+//        vetor.quickCPivo();
+//        vetor.bucket(5);
+//        vetor.radix();
+//        vetor.comb();
+//        vetor.gnome();
         vetor.exibir();
     }
     public static void listas(){
@@ -27,7 +33,13 @@ public class Main {
         //lista.shake();
 //        lista.heap();
 //        lista.shell();
-        lista.couting();
+//        lista.counting();
+//        lista.quickSpivo();
+//        lista.quickCpivo();
+//        lista.bucket(5);
+//        lista.radix();
+//        lista.comb();
+//        lista.gnome();
         lista.exibir();
     }
     public static void arquivos(){
@@ -41,11 +53,18 @@ public class Main {
 //        arq.shake();
 //        arq.heap();
 //        arq.shell();
+//        arq.counting();
+//        arq.quickSPivo();
+//        arq.quickCPivo();
+//        arq.bucket(5);
+//        arq.radix();
+//        arq.comb();
+//        arq.gnome();
         arq.exibirArq();
     }
     public static void main(String[] args) {
-//        vetores();
-        listas();
+        vetores();
+//        listas();
 //        arquivos();
     }
 }
