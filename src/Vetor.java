@@ -292,22 +292,21 @@ public class Vetor {
     }
 
     public void comb() {
-        int gap=TL,aux;
-        boolean troca=true;
-        while(troca){
-            gap=gap*10/13;
-            if(gap<=1){
+        int gap = TL;
+        boolean troca = true;
+        while (gap > 1 || troca) {
+            gap = gap*10/13;
+            if(gap<1){
                 gap=1;
-                troca=false;
             }
-            int i=0;
-            while(i+gap<TL){
-                if(vet[i]>vet[i+gap]){
-                    aux=vet[i+gap];
-                    vet[i+gap]=vet[i];
-                    vet[i]=aux;
+            troca = false;
+            for (int i = 0; i + gap < TL; i++) {
+                if (vet[i] > vet[i + gap]) {
+                    int temp = vet[i];
+                    vet[i] = vet[i + gap];
+                    vet[i + gap] = temp;
+                    troca = true;
                 }
-                i++;
             }
         }
     }
@@ -327,4 +326,40 @@ public class Vetor {
             }
         }
     }
+
+    private void particao(int[] vet1, int[] vet2) {
+        for (int i = 0; i < TL/2; i++) {
+            vet1[i]=vet[i];
+            vet2[i]=vet[i+(TL/2)];
+        }
+    }
+
+    private void fusao(int[] vet1, int[] vet2, int seq) {
+        int i=0,j=0,k=0,aux=seq;
+        while(k<TL){
+            while (i < seq && j < seq) {
+                if (vet1[i] > vet2[j])
+                    vet[k++] = vet2[j++];
+                else
+                    vet[k++] = vet1[i++];
+            }
+            while(i<seq)
+                vet[k++]=vet1[i++];
+            while(j<seq)
+                vet[k++]=vet2[j++];
+            seq=seq+aux;
+        }
+    }
+
+    public void merge(){
+        int vet1[] = new int[TL/2];
+        int vet2[] = new int[TL/2];
+        int seq=1;
+        while(seq<TL){
+            particao(vet1,vet2);
+            fusao(vet1,vet2,seq);
+            seq=seq*2;
+        }
+    }
+
 }

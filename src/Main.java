@@ -3,7 +3,7 @@ import Lista.Lista;
 
 public class Main {
     public static void vetores(){
-        Vetor vetor = new Vetor(10);
+        Vetor vetor = new Vetor(8);
         vetor.preencher();
         vetor.exibir();
         //vetor.insercaoDireta();
@@ -20,6 +20,7 @@ public class Main {
 //        vetor.radix();
 //        vetor.comb();
 //        vetor.gnome();
+        vetor.merge();
         vetor.exibir();
     }
     public static void listas(){
