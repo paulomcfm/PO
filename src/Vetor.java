@@ -296,9 +296,8 @@ public class Vetor {
         boolean troca = true;
         while (gap > 1 || troca) {
             gap = gap*10/13;
-            if(gap<1){
+            if(gap<1)
                 gap=1;
-            }
             troca = false;
             for (int i = 0; i + gap < TL; i++) {
                 if (vet[i] > vet[i + gap]) {

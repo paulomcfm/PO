@@ -610,12 +610,11 @@ public class Arquivo_Java {
         Registro reg2 = new Registro();
         int gap=filesize(),aux;
         boolean troca=true;
-        while(troca){
+        while(gap > 1 || troca){
             gap=gap*10/13;
-            if(gap<=1){
+            if(gap<=1)
                 gap=1;
-                troca=false;
-            }
+            troca=false;
             int i=0;
             while(i+gap<filesize()){
                 seekArq(i);
@@ -627,6 +626,7 @@ public class Arquivo_Java {
                     reg2.gravaNoArq(arquivo);
                     seekArq(i+gap);
                     reg1.gravaNoArq(arquivo);
+                    troca=true;
                 }
                 i++;
             }

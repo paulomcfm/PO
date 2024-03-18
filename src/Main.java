@@ -3,7 +3,7 @@ import Lista.Lista;
 
 public class Main {
     public static void vetores(){
-        Vetor vetor = new Vetor(8);
+        Vetor vetor = new Vetor(10);
         vetor.preencher();
         vetor.exibir();
         //vetor.insercaoDireta();
@@ -20,12 +20,12 @@ public class Main {
 //        vetor.radix();
 //        vetor.comb();
 //        vetor.gnome();
-        vetor.merge();
+//        vetor.merge();
         vetor.exibir();
     }
     public static void listas(){
         Lista lista = new Lista();
-        lista.preencher(10);
+        lista.preencher(8);
         lista.exibir();
         //lista.insercaoDireta();
         //lista.insercaoBinaria();
@@ -41,6 +41,7 @@ public class Main {
 //        lista.radix();
 //        lista.comb();
 //        lista.gnome();
+        lista.merge();
         lista.exibir();
     }
     public static void arquivos(){
@@ -64,8 +65,8 @@ public class Main {
         arq.exibirArq();
     }
     public static void main(String[] args) {
-        vetores();
-//        listas();
+//        vetores();
+        listas();
 //        arquivos();
     }
 }

@@ -341,16 +341,25 @@ public class Lista {
         }
         return i;
     }
+
+    private void setValor(Lista lista, int pos, int info) {
+        No aux= lista.inicio;
+        for (int i = 0; i < pos; i++)
+            aux=aux.getProx();
+        aux.setInfo(info);
+    }
     public void counting() {
-        No aux = inicio;
-        int j=0;
-        int saida[] = new int[tl()];
+        No aux = inicio, auxs;
+        Lista saida = new Lista();
+        saida.inicializa();
         int maior = aux.getInfo();
         aux=aux.getProx();
+        saida.insercaoFinal(0);
         while(aux!=null) {
             if(aux.getInfo()>maior)
                 maior= aux.getInfo();
             aux=aux.getProx();
+            saida.insercaoFinal(0);
         }
         int cont[] = new int[maior+1];
         aux=inicio;
@@ -362,15 +371,16 @@ public class Lista {
             cont[i]=cont[i-1]+cont[i];
         aux=fim;
         while(aux!=null){
-            saida[cont[aux.getInfo()]-1]=aux.getInfo();
+            setValor(saida,cont[aux.getInfo()]-1,aux.getInfo());
             cont[aux.getInfo()]--;
             aux=aux.getAnt();
         }
         aux=inicio;
+        auxs=saida.inicio;
         while (aux!=null) {
-            aux.setInfo(saida[j]);
+            aux.setInfo(auxs.getInfo());
             aux=aux.getProx();
-            j++;
+            auxs=auxs.getProx();
         }
     }
 
@@ -491,15 +501,17 @@ public class Lista {
         }
     }
     public void countingRadix(int chave) {
-        No aux = inicio;
-        int j=0;
-        int saida[] = new int[tl()];
+        No aux = inicio, auxs;
+        Lista saida = new Lista();
+        saida.inicializa();
         int maior = aux.getInfo();
         aux=aux.getProx();
+        saida.insercaoFinal(0);
         while(aux!=null) {
             if(aux.getInfo()>maior)
                 maior= aux.getInfo();
             aux=aux.getProx();
+            saida.insercaoFinal(0);
         }
         int cont[] = new int[maior+1];
         aux=inicio;
@@ -511,15 +523,16 @@ public class Lista {
             cont[i]=cont[i-1]+cont[i];
         aux=fim;
         while(aux!=null){
-            saida[cont[(aux.getInfo()/chave)%10]-1]=aux.getInfo();
+            setValor(saida,cont[(aux.getInfo()/chave)%10]-1,aux.getInfo());
             cont[(aux.getInfo()/chave)%10]--;
             aux=aux.getAnt();
         }
         aux=inicio;
+        auxs=saida.inicio;
         while (aux!=null) {
-            aux.setInfo(saida[j]);
+            aux.setInfo(auxs.getInfo());
             aux=aux.getProx();
-            j++;
+            auxs=auxs.getProx();
         }
     }
     public void radix() {
@@ -549,12 +562,11 @@ public class Lista {
             aux=aux.getProx();
         gap=i;
         boolean troca=true;
-        while(troca){
+        while(gap > 1 || troca){
             gap=gap*10/13;
-            if(gap<=1){
+            if(gap<=1)
                 gap=1;
-                troca=false;
-            }
+            troca=false;
             aux=inicio;
             agap = andaGap(aux, gap);
             while(agap!=null){
@@ -562,6 +574,7 @@ public class Lista {
                     iaux=aux.getInfo();
                     aux.setInfo(agap.getInfo());
                     agap.setInfo(iaux);
+                    troca=true;
                 }
                 aux=aux.getProx();
                 agap = andaGap(aux, gap);
@@ -583,6 +596,48 @@ public class Lista {
                 aux.getAnt().setInfo(iaux);
                 aux=aux.getAnt();
             }
+        }
+    }
+
+    private void fusao(Lista l1, Lista l2, int seq) {
+
+    }
+
+    private void particao(Lista l1, Lista l2, int tam) {
+        No aux=inicio;
+        No aux1=l1.inicio;
+        for (int i = 0; i < tam/2; i++) {
+            aux1.setInfo(aux.getInfo());
+            aux=aux.getProx();
+            aux1=aux1.getProx();
+        }
+        No aux2=l2.inicio;
+        for (int i = 0; i < tam/2; i++) {
+            aux2.setInfo(aux.getInfo());
+            aux=aux.getProx();
+            aux2=aux2.getProx();
+        }
+    }
+    public void merge() {
+        Lista l1 = new Lista();
+        l1.inicializa();
+        Lista l2 = new Lista();
+        l2.inicializa();
+        No aux = inicio;
+        int i=1;
+        while(aux!=null){ //arrumar aqui, ta criando lista de 10 pos nas duas
+            l1.insercaoFinal(0);
+            l2.insercaoFinal(0);
+            aux=aux.getProx();
+            i++;
+        }
+        int seq=1;
+        while(seq<i){
+            particao(l1,l2,i);
+            l1.exibir();
+            l2.exibir();
+            fusao(l1,l2,seq);
+            seq=seq*2;
         }
     }
 }
