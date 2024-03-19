@@ -25,7 +25,7 @@ public class Main {
     }
     public static void listas(){
         Lista lista = new Lista();
-        lista.preencher(8);
+        lista.preencher(10);
         lista.exibir();
         //lista.insercaoDireta();
         //lista.insercaoBinaria();
@@ -41,12 +41,12 @@ public class Main {
 //        lista.radix();
 //        lista.comb();
 //        lista.gnome();
-        lista.merge();
+//        lista.merge();
         lista.exibir();
     }
     public static void arquivos(){
         Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
-        arq.preencher(10);
+        arq.preencher(8);
         arq.exibirArq();
         //arq.insercaoDireta();
         //arq.insercaoBinaria();
@@ -62,11 +62,14 @@ public class Main {
 //        arq.radix();
 //        arq.comb();
 //        arq.gnome();
+//        arq.merge();
         arq.exibirArq();
     }
     public static void main(String[] args) {
-//        vetores();
-        listas();
+        vetores();
+//        listas();
 //        arquivos();
     }
+    //Como calcular as equações de complexidade?
+    //Comparações e movimentações também contam em funções auxiliares, como Busca Bin na insercao Bin?
 }

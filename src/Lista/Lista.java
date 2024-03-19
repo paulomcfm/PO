@@ -600,7 +600,39 @@ public class Lista {
     }
 
     private void fusao(Lista l1, Lista l2, int seq) {
-
+        int i=0,j=0,k=0,seqaux=seq;
+        No aux = inicio;
+        No aux1 = l1.inicio;
+        No aux2 = l2.inicio;
+        while(aux!=null){
+            while (i < seq && j < seq) {
+                if (aux1.getInfo() > aux2.getInfo()) {
+                    aux.setInfo(aux2.getInfo());
+                    aux=aux.getProx();
+                    aux2=aux2.getProx();
+                    j++;
+                }
+                else{
+                    aux.setInfo(aux1.getInfo());
+                    aux=aux.getProx();
+                    aux1=aux1.getProx();
+                    i++;
+                }
+            }
+            while(i<seq){
+                aux.setInfo(aux1.getInfo());
+                aux=aux.getProx();
+                aux1=aux1.getProx();
+                i++;
+            }
+            while(j<seq){
+                aux.setInfo(aux2.getInfo());
+                aux=aux.getProx();
+                aux2=aux2.getProx();
+                j++;
+            }
+            seq=seq+seqaux;
+        }
     }
 
     private void particao(Lista l1, Lista l2, int tam) {
@@ -624,18 +656,18 @@ public class Lista {
         Lista l2 = new Lista();
         l2.inicializa();
         No aux = inicio;
-        int i=1;
+        int i=0;
         while(aux!=null){ //arrumar aqui, ta criando lista de 10 pos nas duas
-            l1.insercaoFinal(0);
-            l2.insercaoFinal(0);
             aux=aux.getProx();
             i++;
+        }
+        for (int j = 0; j < i/2; j++) {
+            l1.insercaoFinal(0);
+            l2.insercaoFinal(0);
         }
         int seq=1;
         while(seq<i){
             particao(l1,l2,i);
-            l1.exibir();
-            l2.exibir();
             fusao(l1,l2,seq);
             seq=seq*2;
         }

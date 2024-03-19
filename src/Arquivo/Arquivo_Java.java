@@ -9,6 +9,19 @@ import java.util.Random;
 public class Arquivo_Java {
     private String nomearquivo;
     private RandomAccessFile arquivo;
+    private int c, m;
+
+    public RandomAccessFile getArquivo() {
+        return arquivo;
+    }
+
+    public int getC() {
+        return c;
+    }
+
+    public int getM() {
+        return m;
+    }
 
     public Arquivo_Java(String nomearquivo) {
         try {
@@ -45,6 +58,10 @@ public class Arquivo_Java {
     public void inserirRegNoFinal(Registro reg) {
         seekArq(filesize());//ultimo byte
         reg.gravaNoArq(arquivo);
+    }
+
+    public void copiaArquivo(RandomAccessFile arquivo){
+        this.arquivo = arquivo;
     }
 
     public int filesize() {
@@ -124,7 +141,7 @@ public class Arquivo_Java {
     public void insercaoDireta(){ //inicia i no segundo elemento, enquanto i>0 e aux maior que vet[i-1] vai trocando, dps incrementa i ate tl
         Registro aux = new Registro();
         Registro ant = new Registro();
-        Registro atual = new Registro();
+        Registro atual;
         int pos;
         for(int i=1;i<filesize();i++){
             seekArq(i);
@@ -654,4 +671,75 @@ public class Arquivo_Java {
             }
         }
     }
+
+        private void particao(Arquivo_Java arq1, Arquivo_Java arq2) {
+            Registro reg = new Registro();
+            arq1.seekArq(0);
+            arq2.seekArq(0);
+            for (int i = 0; i < filesize()/2; i++) {
+                seekArq(i);
+                reg.leDoArq(arquivo);
+                reg.gravaNoArq(arq1.arquivo);
+                seekArq(i+(filesize()/2));
+                reg.leDoArq(arquivo);
+                reg.gravaNoArq(arq2.arquivo);
+            }
+        }
+
+    private void fusao(Arquivo_Java arq1, Arquivo_Java arq2, int seq) {
+        Registro reg1 = new Registro();
+        Registro reg2 = new Registro();
+        int i=0,j=0,k=0,aux=seq;
+        while(k<filesize()){
+            while (i < seq && j < seq) {
+                arq1.seekArq(i);
+                arq2.seekArq(j);
+                reg1.leDoArq(arq1.arquivo);
+                reg2.leDoArq(arq2.arquivo);
+                if (reg1.getCodigo() > reg2.getCodigo()){
+                    seekArq(k++);
+                    reg2.gravaNoArq(arquivo);
+                    j++;
+                }
+                else {
+                    seekArq(k++);
+                    reg1.gravaNoArq(arquivo);
+                    i++;
+                }
+            }
+            while(i<seq) {
+                arq1.seekArq(i++);
+                reg1.leDoArq(arq1.arquivo);
+                seekArq(k++);
+                reg1.gravaNoArq(arquivo);
+            }
+            while(j<seq) {
+                arq2.seekArq(j++);
+                reg2.leDoArq(arq2.arquivo);
+                seekArq(k++);
+                reg2.gravaNoArq(arquivo);
+            }
+            seq=seq+aux;
+        }
+    }
+
+    public void merge(){
+        Arquivo_Java arq1 = new Arquivo_Java("aux1.dat");
+        Arquivo_Java arq2 = new Arquivo_Java("aux2.dat");
+        int seq=1;
+        while(seq<filesize()){
+            particao(arq1,arq2);
+            fusao(arq1,arq2,seq);
+            seq=seq*2;
+        }
+        try {
+            arq1.arquivo.close();
+            arq2.arquivo.close();
+        }catch (Exception e){}
+        File aux1 = new File("aux1.dat");
+        File aux2 = new File("aux2.dat");
+        aux1.delete();
+        aux2.delete();
+    }
+
 }
