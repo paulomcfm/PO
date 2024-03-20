@@ -45,10 +45,31 @@ public class Main {
         lista.exibir();
     }
     public static void arquivos(){
-        Arquivo_Java arq = new Arquivo_Java("./arquivo.dat");
-        arq.preencher(8);
-        arq.exibirArq();
-        //arq.insercaoDireta();
+        Arquivo_Java arqOrd = new Arquivo_Java("./arquivoOrdenado.dat");
+        Arquivo_Java arqRev = new Arquivo_Java("./arquivoReverso.dat");
+        Arquivo_Java arqRand = new Arquivo_Java("./arquivoAleatorio.dat");
+        Arquivo_Java auxRev= new Arquivo_Java(""), auxRand = new Arquivo_Java("");
+        arqRand.geraArquivoRandomico(1024);
+        arqOrd.geraArquivoReverso(1024);
+        arqRev.geraArquivoOrdenado(1024);
+        long ttotalOrd, ttotalRev, ttotalRand, tini, tfim;
+        int compOrd, compRev, compRand, movOrd, movRev, movRand;
+//        arqRand.exibirArq();
+                                                //Insercao Direta
+        //Arquivo Aleatorio
+        auxRand.copiaArquivo(arqRand.getArquivo());
+        auxRand.initMov();
+        auxRand.initComp();
+        tini=System.currentTimeMillis();
+        auxRand.insercaoDireta();
+        tfim=System.currentTimeMillis();
+        ttotalRand=(tfim-tini)/1000;
+        compRand=auxRand.getComp();
+        movRand=auxRand.getMov();
+        System.out.println("Segs = "+ttotalRand);
+        System.out.println("Comps = "+compRand);
+        System.out.println("Movs = "+movRand);
+
         //arq.insercaoBinaria();
         //arq.selecaoDireta();
         //arq.bubble();
@@ -63,13 +84,12 @@ public class Main {
 //        arq.comb();
 //        arq.gnome();
 //        arq.merge();
-        arq.exibirArq();
+        arqRand.exibirArq();
+        auxRand.exibirArq();
     }
     public static void main(String[] args) {
-        vetores();
+//        vetores();
 //        listas();
-//        arquivos();
+        arquivos();
     }
-    //Como calcular as equações de complexidade?
-    //Comparações e movimentações também contam em funções auxiliares, como Busca Bin na insercao Bin?
 }

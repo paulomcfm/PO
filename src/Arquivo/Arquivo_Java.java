@@ -15,11 +15,11 @@ public class Arquivo_Java {
         return arquivo;
     }
 
-    public int getC() {
+    public int getComp() {
         return c;
     }
 
-    public int getM() {
+    public int getMov() {
         return m;
     }
 
@@ -34,6 +34,12 @@ public class Arquivo_Java {
         }
     }
 
+    public void initComp(){
+        c=0;
+    }
+    public void initMov(){
+        m=0;
+    }
     public void truncate(long pos) //desloca eof
     {
         try {
@@ -61,7 +67,21 @@ public class Arquivo_Java {
     }
 
     public void copiaArquivo(RandomAccessFile arquivo){
-        this.arquivo = arquivo;
+        Registro reg = new Registro();
+        try {
+            File file = new File("arquivoAuxiliar.dat");
+            if (file.exists()) {
+                file.delete(); // Exclui o arquivo se ele existir
+            }
+            this.arquivo = new RandomAccessFile("arquivoAuxiliar.dat", "rw");
+            arquivo.seek(0);
+            this.arquivo.seek(0);
+            while(arquivo.getFilePointer() != arquivo.length()){
+                reg.leDoArq(arquivo);
+                reg.gravaNoArq(this.arquivo);
+            }
+        } catch (IOException e) {
+        }
     }
 
     public int filesize() {
@@ -128,10 +148,28 @@ public class Arquivo_Java {
         leArq();
         exibirArq();
     }
-    public void preencher(int qtd) {
+    public void geraArquivoRandomico(int qtd) {
         Random random = new Random();
         for(int i = 0; i < qtd; i++){
-            int codigo = random.nextInt(100) + 1;
+            int codigo = random.nextInt(1024) + 1;
+            String nome = "Nome" + codigo;
+            int idade = random.nextInt(101);
+            inserirRegNoFinal(new Registro(codigo, nome, idade));
+        }
+    }
+    public void geraArquivoOrdenado(int qtd) {
+        Random random = new Random();
+        for(int i = 0; i < qtd; i++){
+            int codigo = i;
+            String nome = "Nome" + codigo;
+            int idade = random.nextInt(101);
+            inserirRegNoFinal(new Registro(codigo, nome, idade));
+        }
+    }
+    public void geraArquivoReverso(int qtd) {
+        Random random = new Random();
+        for(int i = qtd; i > 0; i--){
+            int codigo = i;
             String nome = "Nome" + codigo;
             int idade = random.nextInt(101);
             inserirRegNoFinal(new Registro(codigo, nome, idade));
@@ -150,11 +188,14 @@ public class Arquivo_Java {
             seekArq(i-1);
             ant.leDoArq(arquivo);
             pos=i;
+            c++;
             while(pos>0 && atual.getCodigo()<ant.getCodigo()){
                 seekArq(pos);
                 ant.gravaNoArq(arquivo);
+                m++;
                 seekArq(pos-1);
                 atual.gravaNoArq(arquivo);
+                m++;
                 pos--;
                 if(pos>0){
                     seekArq(pos);
@@ -162,18 +203,24 @@ public class Arquivo_Java {
                     seekArq(pos-1);
                     ant.leDoArq(arquivo);
                 }
+                c++;
             }
             seekArq(pos);
             aux.gravaNoArq(arquivo);
+            m++;
         }
     }
-
+    public int calculaCompInsDir(int n){
+        return 0;
+    }
     public int buscaBinaria(int chave, int tl){
         int ini=0,fim=tl-1,meio=fim/2;
         Registro aux= new Registro();
         seekArq(meio);
         aux.leDoArq(arquivo);
+        c++;
         while(ini<fim && chave!=aux.getCodigo()){
+            c++;
             if(chave>aux.getCodigo()){
                 ini=meio+1;
             }
@@ -183,7 +230,9 @@ public class Arquivo_Java {
             meio=(ini+fim)/2;
             seekArq(meio);
             aux.leDoArq(arquivo);
+            c++;
         }
+        c++;
         if(chave>aux.getCodigo()){
             return meio+1;
         }
@@ -206,8 +255,10 @@ public class Arquivo_Java {
             while(j>pos){
                 seekArq(j);
                 ant.gravaNoArq(arquivo);
+                m++;
                 seekArq(j-1);
                 atual.gravaNoArq(arquivo);
+                m++;
                 j--;
                 if(j>0){
                     seekArq(j);
@@ -218,6 +269,7 @@ public class Arquivo_Java {
             }
             seekArq(pos);
             aux.gravaNoArq(arquivo);
+            m++;
         }
     }
     public void selecaoDireta(){ //posiciona no inicio, vai do segundo ao final procurando um menor, se achar, troca
@@ -232,6 +284,7 @@ public class Arquivo_Java {
                 aux.leDoArq(arquivo);
                 seekArq(posmenor);
                 menor.leDoArq(arquivo);
+                c++;
                 if(aux.getCodigo()<menor.getCodigo()){
                     posmenor=j;
                 }
@@ -242,8 +295,10 @@ public class Arquivo_Java {
             aux.leDoArq(arquivo);
             seekArq(i);
             menor.gravaNoArq(arquivo);
+            m++;
             seekArq(posmenor);
             aux.gravaNoArq(arquivo);
+            m++;
         }
     }
     public void bubble() {
@@ -251,17 +306,19 @@ public class Arquivo_Java {
         Registro reg2 = new Registro();
         int tam = filesize()-1;
         boolean troca = true;
-
         while(tam>1 && troca){
             troca=false;
             for(int i=0;i<tam;i++){
                 seekArq(i);
                 reg1.leDoArq(arquivo);
                 reg2.leDoArq(arquivo);
+                c++;
                 if(reg1.getCodigo()>reg2.getCodigo()){
                     seekArq(i);
                     reg2.gravaNoArq(arquivo);
+                    m++;
                     reg1.gravaNoArq(arquivo);
+                    m++;
                     troca=true;
                 }
             }
@@ -275,17 +332,19 @@ public class Arquivo_Java {
         int fim = filesize()-1;
         int ini=0;
         boolean troca = true;
-
         while(ini < fim && troca){
             troca=false;
             for(int i=ini;i<fim;i++){
                 seekArq(i);
                 reg1.leDoArq(arquivo);
                 reg2.leDoArq(arquivo);
+                c++;
                 if(reg1.getCodigo()>reg2.getCodigo()){
                     seekArq(i);
                     reg2.gravaNoArq(arquivo);
+                    m++;
                     reg1.gravaNoArq(arquivo);
+                    m++;
                     troca=true;
                 }
             }
@@ -296,11 +355,14 @@ public class Arquivo_Java {
                     reg1.leDoArq(arquivo);
                     seekArq(i-1);
                     reg2.leDoArq(arquivo);
+                    c++;
                     if(reg1.getCodigo()<reg2.getCodigo()){
                         seekArq(i);
                         reg2.gravaNoArq(arquivo);
+                        m++;
                         seekArq(i-1);
                         reg1.gravaNoArq(arquivo);
+                        m++;
                         troca=true;
                     }
                 }
@@ -322,19 +384,22 @@ public class Arquivo_Java {
                 seekArq(FE);
                 reg1.leDoArq(arquivo);
                 if(!eof())
-                        reg2.leDoArq(arquivo);
-                if(FD<TL && reg1.getCodigo()<reg2.getCodigo()){
+                    reg2.leDoArq(arquivo);
+                c++;
+                if(FD<TL && reg1.getCodigo()<reg2.getCodigo())
                     maiorF=FD;
-                }
                 seekArq(maiorF);
                 reg1.leDoArq(arquivo);
                 seekArq(pai);
                 reg2.leDoArq(arquivo);
+                c++;
                 if(reg1.getCodigo()>reg2.getCodigo()){
                     seekArq(maiorF);
                     reg2.gravaNoArq(arquivo);
+                    m++;
                     seekArq(pai);
                     reg1.gravaNoArq(arquivo);
+                    m++;
                 }
                 pai--;
             }
@@ -344,8 +409,10 @@ public class Arquivo_Java {
             reg2.leDoArq(arquivo);
             seekArq(0);
             reg2.gravaNoArq(arquivo);
+            m++;
             seekArq(TL-1);
             reg1.gravaNoArq(arquivo);
+            m++;
             TL--;
         }
     }
@@ -366,17 +433,21 @@ public class Arquivo_Java {
                     seekArq(j-dist);
                     reg.leDoArq(arquivo);
                 }
+                c++;
                 while(j-dist>=0 && aux.getCodigo()<reg.getCodigo()){
                     seekArq(j);
                     reg.gravaNoArq(arquivo);
+                    m++;
                     j=j-dist;
                     if(j-dist>=0){
                         seekArq(j-dist);
                         reg.leDoArq(arquivo);
                     }
+                    c++;
                 }
                 seekArq(j);
                 aux.gravaNoArq(arquivo);
+                m++;
             }
             dist=dist/3;
         }
@@ -389,6 +460,7 @@ public class Arquivo_Java {
         int maior=reg.getCodigo();
         while(!eof()){
             reg.leDoArq(arquivo);
+            c++;
             if(reg.getCodigo()>maior)
                 maior= reg.getCodigo();
         }
@@ -408,12 +480,14 @@ public class Arquivo_Java {
             saida.seekArq(cont[reg.getCodigo()]-1);
             cont[reg.getCodigo()]--;
             reg.gravaNoArq(saida.arquivo);
+            m++;
         }
         seekArq(0);
         saida.seekArq(0);
         while(!eof()){
             reg.leDoArq(saida.arquivo);
             reg.gravaNoArq(arquivo);
+            m++;
         }
         try {
             saida.arquivo.close();
@@ -437,22 +511,27 @@ public class Arquivo_Java {
             seekArq(j);
             reg2.leDoArq(arquivo);
             if(flag) {
+                c++;
                 while (i < j && reg1.getCodigo() <= reg2.getCodigo()) {
                     i++;
                     seekArq(i);
                     reg1.leDoArq(arquivo);
                     seekArq(j);
                     reg2.leDoArq(arquivo);
+                    c++;
                 }
             }
-            else
+            else {
+                c++;
                 while (i < j && reg1.getCodigo() <= reg2.getCodigo()) {
                     j--;
                     seekArq(i);
                     reg1.leDoArq(arquivo);
                     seekArq(j);
                     reg2.leDoArq(arquivo);
+                    c++;
                 }
+            }
             if(i<j) {
                 seekArq(i);
                 reg1.leDoArq(arquivo);
@@ -460,8 +539,10 @@ public class Arquivo_Java {
                 reg2.leDoArq(arquivo);
                 seekArq(i);
                 reg2.gravaNoArq(arquivo);
+                m++;
                 seekArq(j);
                 reg1.gravaNoArq(arquivo);
+                m++;
             }
             flag = !flag;
         }
@@ -487,15 +568,19 @@ public class Arquivo_Java {
             reg1.leDoArq(arquivo);
             seekArq(j);
             reg2.leDoArq(arquivo);
+            c++;
             while(reg1.getCodigo()<pivo) {
                 i++;
                 seekArq(i);
                 reg1.leDoArq(arquivo);
+                c++;
             }
+            c++;
             while(reg2.getCodigo()>pivo) {
                 j--;
                 seekArq(j);
                 reg2.leDoArq(arquivo);
+                c++;
             }
             if(i<=j){
                 seekArq(i);
@@ -504,8 +589,10 @@ public class Arquivo_Java {
                 reg2.leDoArq(arquivo);
                 seekArq(i);
                 reg2.gravaNoArq(arquivo);
+                m++;
                 seekArq(j);
                 reg1.gravaNoArq(arquivo);
+                m++;
                 i++;
                 j--;
             }
@@ -525,6 +612,7 @@ public class Arquivo_Java {
         for (i = 1; i < filesize(); i++) {
             seekArq(i);
             reg1.leDoArq(arquivo);
+            c++;
             if(reg1.getCodigo()>maior)
                 maior=reg1.getCodigo();
         }
@@ -539,6 +627,7 @@ public class Arquivo_Java {
             baldes[index].seekArq(pos[index]);
             pos[index]++;
             reg1.gravaNoArq(baldes[index].arquivo);
+            m++;
         }
         for (i = 0; i < qtd; i++) {
             if(pos[i]!=0){
@@ -553,6 +642,7 @@ public class Arquivo_Java {
                 reg1.leDoArq(baldes[j].arquivo);
                 seekArq(i);
                 reg1.gravaNoArq(arquivo);
+                m++;
                 i++;
             }
             j++;
@@ -573,6 +663,7 @@ public class Arquivo_Java {
         int maior=reg.getCodigo(), index;
         while(!eof()){
             reg.leDoArq(arquivo);
+            c++;
             if(reg.getCodigo()>maior)
                 maior= reg.getCodigo();
         }
@@ -593,6 +684,7 @@ public class Arquivo_Java {
             index=(reg.getCodigo()/chave)%10;
             saida.seekArq(cont[index]-1);
             reg.gravaNoArq(saida.arquivo);
+            m++;
             cont[index]--;
         }
         seekArq(0);
@@ -600,6 +692,7 @@ public class Arquivo_Java {
         while(!eof()){
             reg.leDoArq(saida.arquivo);
             reg.gravaNoArq(arquivo);
+            m++;
         }
         try {
             saida.arquivo.close();
@@ -615,6 +708,7 @@ public class Arquivo_Java {
         int maior=reg.getCodigo();
         while(!eof()){
             reg.leDoArq(arquivo);
+            c++;
             if(reg.getCodigo()>maior)
                 maior= reg.getCodigo();
         }
@@ -638,11 +732,14 @@ public class Arquivo_Java {
                 reg1.leDoArq(arquivo);
                 seekArq(i+gap);
                 reg2.leDoArq(arquivo);
+                c++;
                 if(reg1.getCodigo()>reg2.getCodigo()){
                     seekArq(i);
                     reg2.gravaNoArq(arquivo);
+                    m++;
                     seekArq(i+gap);
                     reg1.gravaNoArq(arquivo);
+                    m++;
                     troca=true;
                 }
                 i++;
@@ -661,12 +758,15 @@ public class Arquivo_Java {
             reg1.leDoArq(arquivo);
             seekArq(i-1);
             reg2.leDoArq(arquivo);
+            c++;
             if(reg1.getCodigo()>=reg2.getCodigo())
                 i++;
             else{
                 seekArq(i-1);
                 reg1.gravaNoArq(arquivo);
+                m++;
                 reg2.gravaNoArq(arquivo);
+                m++;
                 i--;
             }
         }
@@ -680,9 +780,11 @@ public class Arquivo_Java {
                 seekArq(i);
                 reg.leDoArq(arquivo);
                 reg.gravaNoArq(arq1.arquivo);
+                m++;
                 seekArq(i+(filesize()/2));
                 reg.leDoArq(arquivo);
                 reg.gravaNoArq(arq2.arquivo);
+                m++;
             }
         }
 
@@ -696,14 +798,17 @@ public class Arquivo_Java {
                 arq2.seekArq(j);
                 reg1.leDoArq(arq1.arquivo);
                 reg2.leDoArq(arq2.arquivo);
+                c++;
                 if (reg1.getCodigo() > reg2.getCodigo()){
                     seekArq(k++);
                     reg2.gravaNoArq(arquivo);
+                    m++;
                     j++;
                 }
                 else {
                     seekArq(k++);
                     reg1.gravaNoArq(arquivo);
+                    m++;
                     i++;
                 }
             }
@@ -712,12 +817,14 @@ public class Arquivo_Java {
                 reg1.leDoArq(arq1.arquivo);
                 seekArq(k++);
                 reg1.gravaNoArq(arquivo);
+                m++;
             }
             while(j<seq) {
                 arq2.seekArq(j++);
                 reg2.leDoArq(arq2.arquivo);
                 seekArq(k++);
                 reg2.gravaNoArq(arquivo);
+                m++;
             }
             seq=seq+aux;
         }
