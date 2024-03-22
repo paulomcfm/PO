@@ -21,6 +21,7 @@ public class Main {
 //        vetor.comb();
 //        vetor.gnome();
 //        vetor.merge();
+        vetor.mergeSort();
         vetor.exibir();
     }
     public static void listas(){
@@ -88,8 +89,8 @@ public class Main {
         auxRand.exibirArq();
     }
     public static void main(String[] args) {
-//        vetores();
+        vetores();
 //        listas();
-        arquivos();
+//        arquivos();
     }
 }

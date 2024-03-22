@@ -261,7 +261,7 @@ public class Vetor {
             j++;
         }
     }
-    public void countingRadix(int chave){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
+    private void countingRadix(int chave){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
         int maior=vet[0], index;
         for(int i=1;i<TL;i++)
             if(vet[i]>maior)
@@ -295,7 +295,7 @@ public class Vetor {
         int gap = TL;
         boolean troca = true;
         while (gap > 1 || troca) {
-            gap = gap*10/13;
+            gap = (int) (gap*1.3);
             if(gap<1)
                 gap=1;
             troca = false;
@@ -359,6 +359,37 @@ public class Vetor {
             fusao(vet1,vet2,seq);
             seq=seq*2;
         }
+    }
+
+    private void fusaoM(int[] aux, int ini1, int fim1, int ini2, int fim2) {
+        int i=ini1, j=ini2, k=0;
+        while(i<=fim1 & j<=fim2){
+            if (vet[i] > vet[j])
+                aux[k++] = vet[j++];
+            else
+                aux[k++] = vet[i++];
+        }
+        while(i<=fim1)
+            aux[k++]=vet[i++];
+        while(j<=fim2)
+            aux[k++]=vet[j++];
+        for(i=0;i<k;i++)
+            vet[i+ini1]=aux[i];
+    }
+
+    private void mergeDiv(int[] aux, int esq, int dir) {
+        int meio;
+        if(esq<dir){
+            meio=(esq+dir)/2;
+            mergeDiv(aux, esq, meio);
+            mergeDiv(aux, meio+1, dir);
+            fusaoM(aux, esq, meio, meio+1, dir);
+        }
+    }
+
+    public void mergeSort(){
+        int aux[]=new int[TL];
+        mergeDiv(aux,0,TL-1);
     }
 
 }
