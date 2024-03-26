@@ -363,7 +363,7 @@ public class Vetor {
 
     private void fusaoM(int[] aux, int ini1, int fim1, int ini2, int fim2) {
         int i=ini1, j=ini2, k=0;
-        while(i<=fim1 & j<=fim2){
+        while(i<=fim1 && j<=fim2){
             if (vet[i] > vet[j])
                 aux[k++] = vet[j++];
             else

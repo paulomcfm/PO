@@ -657,7 +657,7 @@ public class Lista {
         l2.inicializa();
         No aux = inicio;
         int i=0;
-        while(aux!=null){ //arrumar aqui, ta criando lista de 10 pos nas duas
+        while(aux!=null){
             aux=aux.getProx();
             i++;
         }
@@ -672,4 +672,7 @@ public class Lista {
             seq=seq*2;
         }
     }
+
+    //fazer pegando as posições e usando o i e j para controlar
+
 }

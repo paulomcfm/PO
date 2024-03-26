@@ -43,6 +43,7 @@ public class Main {
 //        lista.comb();
 //        lista.gnome();
 //        lista.merge();
+        lista.mergeSort();
         lista.exibir();
     }
     public static void arquivos(){
@@ -89,8 +90,8 @@ public class Main {
         auxRand.exibirArq();
     }
     public static void main(String[] args) {
-        vetores();
-//        listas();
+//        vetores();
+        listas();
 //        arquivos();
     }
 }
