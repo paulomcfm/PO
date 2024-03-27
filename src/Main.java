@@ -1,6 +1,9 @@
 import Arquivo.Arquivo_Java;
 import Lista.Lista;
 
+import java.io.*;
+import java.util.Scanner;
+
 public class Main {
     public static void vetores(){
         Vetor vetor = new Vetor(10);
@@ -59,6 +62,7 @@ public class Main {
         arqRev.geraArquivoOrdenado(1024);
         long ttotalOrd, ttotalRev, ttotalRand, tini, tfim;
         int compOrd, compRev, compRand, movOrd, movRev, movRand;
+        double compMin, compMed, compMax, movMin, movMed, movMax;
 
                                                 //Insercao Direta
         //Arquivo Ordenado
@@ -70,8 +74,8 @@ public class Main {
         ttotalOrd=(tfim-tini)/1000;
         compOrd=arqOrd.getComp();
         movOrd=arqOrd.getMov();
-        arqOrd.IDcompMin();
-        arqOrd.IDmovMin();
+        compMin=arqOrd.IDcompMin();
+        movMin=arqOrd.IDmovMin();
 
         //Arquivo Reverso
         auxRev.copiaArquivo(arqRev.getArquivo());
@@ -83,8 +87,8 @@ public class Main {
         ttotalRev=(tfim-tini)/1000;
         compRev=auxRev.getComp();
         movRev=auxRev.getMov();
-        auxRev.IDcompMax();
-        auxRev.IDmovMax();
+        compMax=auxRev.IDcompMax();
+        movMax=auxRev.IDmovMax();
 
         //Arquivo Aleatorio
         auxRand.copiaArquivo(arqRand.getArquivo());
@@ -96,8 +100,8 @@ public class Main {
         ttotalRand=(tfim-tini)/1000;
         compRand=auxRand.getComp();
         movRand=auxRand.getMov();
-        auxRand.IDcompMed();
-        auxRand.IDmovMed();
+        compMed=auxRand.IDcompMed();
+        movMed=auxRand.IDmovMed();
 
         //GRAVA NO ARQ TXT
 
@@ -111,8 +115,8 @@ public class Main {
         ttotalOrd=(tfim-tini)/1000;
         compOrd=arqOrd.getComp();
         movOrd=arqOrd.getMov();
-        arqOrd.IDcompMin();
-        arqOrd.IDmovMin();
+        compMin=arqOrd.IDcompMin();
+        movMin=arqOrd.IDmovMin();
 
         //Arquivo Reverso
         auxRev.copiaArquivo(arqRev.getArquivo());
@@ -124,8 +128,8 @@ public class Main {
         ttotalRev=(tfim-tini)/1000;
         compRev=auxRev.getComp();
         movRev=auxRev.getMov();
-        auxRev.IDcompMax();
-        auxRev.IDmovMax();
+        compMax=auxRev.IDcompMax();
+        movMax=auxRev.IDmovMax();
 
         //Arquivo Aleatorio
         auxRand.copiaArquivo(arqRand.getArquivo());
@@ -137,8 +141,8 @@ public class Main {
         ttotalRand=(tfim-tini)/1000;
         compRand=auxRand.getComp();
         movRand=auxRand.getMov();
-        auxRand.IDcompMed();
-        auxRand.IDmovMed();
+        compMed=auxRand.IDcompMed();
+        movMed=auxRand.IDmovMed();
 
         //GRAVA NO ARQ TXT
 
@@ -152,8 +156,8 @@ public class Main {
         ttotalOrd=(tfim-tini)/1000;
         compOrd=arqOrd.getComp();
         movOrd=arqOrd.getMov();
-        arqOrd.IDcompMin();
-        arqOrd.IDmovMin();
+        compMin=arqOrd.IDcompMin();
+        movMin=arqOrd.IDmovMin();
 
         //Arquivo Reverso
         auxRev.copiaArquivo(arqRev.getArquivo());
@@ -165,8 +169,8 @@ public class Main {
         ttotalRev=(tfim-tini)/1000;
         compRev=auxRev.getComp();
         movRev=auxRev.getMov();
-        auxRev.IDcompMax();
-        auxRev.IDmovMax();
+        compMax=auxRev.IDcompMax();
+        movMax=auxRev.IDmovMax();
 
         //Arquivo Aleatorio
         auxRand.copiaArquivo(arqRand.getArquivo());
@@ -178,8 +182,8 @@ public class Main {
         ttotalRand=(tfim-tini)/1000;
         compRand=auxRand.getComp();
         movRand=auxRand.getMov();
-        auxRand.IDcompMed();
-        auxRand.IDmovMed();
+        compMed=auxRand.IDcompMed();
+        movMed=auxRand.IDmovMed();
 
         //GRAVA NO ARQ TXT
 
@@ -677,6 +681,89 @@ public class Main {
     public static void main(String[] args) {
 //        vetores();
 //        listas();
-        arquivos();
+//        arquivos();
+        arquivotxt();
+    }
+
+    private static void arquivotxt() {
+        Arquivo_Java arqOrd = new Arquivo_Java("./arquivoOrdenado.dat");
+        Arquivo_Java arqRev = new Arquivo_Java("./arquivoReverso.dat");
+        Arquivo_Java arqRand = new Arquivo_Java("./arquivoAleatorio.dat");
+        Arquivo_Java auxRev = new Arquivo_Java(""), auxRand = new Arquivo_Java("");
+        arqRand.geraArquivoRandomico(1024);
+        arqRev.geraArquivoReverso(1024);
+        arqOrd.geraArquivoOrdenado(1024);
+        long ttotalOrd, ttotalRev, ttotalRand, tini, tfim;
+        int compOrd, compRev, compRand, movOrd, movRev, movRand;
+        double compMin, compMed, compMax, movMin, movMed, movMax;
+
+        //Insercao Direta
+        //Arquivo Ordenado
+        arqOrd.initMov();
+        arqOrd.initComp();
+        tini=System.currentTimeMillis();
+        arqOrd.insercaoDireta();
+        tfim=System.currentTimeMillis();
+        ttotalOrd=(tfim-tini)/1000;
+        compOrd=arqOrd.getComp();
+        movOrd=arqOrd.getMov();
+        compMin=arqOrd.IDcompMin();
+        movMin=arqOrd.IDmovMin();
+
+        //Arquivo Reverso
+        auxRev.copiaArquivo(arqRev.getArquivo());
+        auxRev.initMov();
+        auxRev.initComp();
+        tini=System.currentTimeMillis();
+//        auxRev.insercaoDireta();
+        tfim=System.currentTimeMillis();
+        ttotalRev=(tfim-tini)/1000;
+        compRev=auxRev.getComp();
+        movRev=auxRev.getMov();
+        compMax=auxRev.IDcompMax();
+        movMax=auxRev.IDmovMax();
+
+        //Arquivo Aleatorio
+        auxRand.copiaArquivo(arqRand.getArquivo());
+        auxRand.initMov();
+        auxRand.initComp();
+        tini=System.currentTimeMillis();
+//        auxRand.insercaoDireta();
+        tfim=System.currentTimeMillis();
+        ttotalRand=(tfim-tini)/1000;
+        compRand=auxRand.getComp();
+        movRand=auxRand.getMov();
+        compMed=auxRand.IDcompMed();
+        movMed=auxRand.IDmovMed();
+        try {
+            File arquivo = new File("tabela.txt");
+            if (arquivo.exists()) {
+                arquivo.delete();
+            }
+
+            FileWriter fw = new FileWriter("tabela.txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            // Cabeçalho
+            bw.write("Métodos de Ordenação\t|\t\tArquivo Ordenado\t\t     |||\t\tArquivo em Ordem Reversa\t\t|||\t\tArquivo Randomico\t\t|||");
+            bw.newLine();
+            bw.write("\t\t\t| Comp Prog | Comp Equa | Mov Prog | Mov Equa | Tempo |||");
+            bw.write(" Comp Prog | Comp Equa | Mov Prog | Mov Equa | Tempo  |||");
+            bw.write(" Comp Prog | Comp Equa | Mov Prog | Mov Equa | Tempo  |||");
+
+            bw.newLine();
+            // Inserção Direta
+            bw.write("Inserção Direta\t\t| "
+                    + compOrd + " | " + compMin + " | " + movOrd + " | " + movMin + " | " + ttotalOrd + " ||| "
+                    + compRev + " | " + compMax + " | " + movRev + " | " + movMax + " | " + ttotalRev+ " ||| "
+                    + compRand + " | " + compMed + " | " + movRand + " | " + movMed + " | " + ttotalRand+" |||");
+
+            // Fechar o arquivo
+            bw.close();
+            fw.close();
+
+        } catch (IOException e) {
+            System.err.println("Erro ao gravar arquivo: " + e.getMessage());
+        }
     }
 }
