@@ -301,7 +301,8 @@ public class Lista {
     }
     private No posicionaPont(int pos) {
         No aux=inicio;
-        for(int i=0;i<pos;i++)
+        int i;
+        for(i=0;i<pos;i++)
             aux=aux.getProx();
         return aux;
     }
@@ -673,6 +674,161 @@ public class Lista {
         }
     }
 
-    //fazer pegando as posições e usando o i e j para controlar
+    private int calcTam() {
+        int i;
+        No aux=inicio;
+        for(i=0; aux!=null;i++)
+            aux=aux.getProx();
+        return i;
+    }
+    public void mergeSort() {
+        Lista aux = new Lista();
+        aux.inicializa();
+        No naux = inicio;
+        while(naux!=null){
+            aux.insercaoFinal(0);
+            naux=naux.getProx();
+        }
+        int i = calcTam();
+        mergeDiv(aux, 0, i);
+    }
 
+    private void mergeDiv(Lista aux, int esq, int dir) {
+        int meio;
+        if(esq<dir){
+            meio=(esq+dir)/2;
+            mergeDiv(aux, esq, meio);
+            mergeDiv(aux, meio+1, dir);
+            fusaoM(aux, esq, meio, meio+1, dir);
+        }
+    }
+
+    private void fusaoM(Lista aux, int ini1, int fim1, int ini2, int fim2) {
+        int i=ini1, j=ini2, k=0;
+        No noi = posicionaPont(i), noj = posicionaPont(j), noa=aux.inicio , nol;
+        while(noi!=null && i<=fim1 && noj!=null && j<=fim2){
+            if (noi.getInfo() > noj.getInfo()){
+                noa.setInfo(noj.getInfo());
+                noa=noa.getProx();
+                noj=noj.getProx();
+                k++;
+                j++;
+            }
+            else{
+                noa.setInfo(noi.getInfo());
+                noa=noa.getProx();
+                noi=noi.getProx();
+                k++;
+                i++;
+            }
+        }
+        while(noi!=null && i<=fim1){
+            noa.setInfo(noi.getInfo());
+            noa=noa.getProx();
+            noi=noi.getProx();
+            k++;
+            i++;
+        }
+        while(noj != null && j<=fim2) {
+            noa.setInfo(noj.getInfo());
+            noa=noa.getProx();
+            noj=noj.getProx();
+            k++;
+            j++;
+        }
+        noa=aux.inicio;
+        nol = posicionaPont(ini1);
+        for(i=0;i<k;i++){
+            nol.setInfo(noa.getInfo());
+            nol=nol.getProx();
+            noa=noa.getProx();
+        }
+    }
+    private int tamMin(int runs) {
+        int tam=runs;
+        int i = 0;
+        while (tam >= runs) {
+            tam /= runs;
+            i++;
+        }
+        return tam + i;
+    }
+
+    private int min(int i, int j) {
+        return (i <= j) ? i : j;
+    }
+
+    public void insercaoDiretaTim(No esq, No dir){
+        int aux;
+        No pos, i=esq.getProx();
+        while (i!=dir.getProx()) {
+            aux=i.getInfo();
+            pos=i;
+            while(pos!=esq && aux<pos.getAnt().getInfo()){
+                pos.setInfo(pos.getAnt().getInfo());
+                pos = pos.getAnt();
+            }
+            pos.setInfo(aux);
+            i = i.getProx();
+        }
+    }
+
+    private void mergeTim(int esq, int meio, int dir) {
+        int tam1 = meio - esq + 1, tam2 = dir - meio;
+        Lista l1 = new Lista();
+        l1.inicializa();
+        Lista l2 = new Lista();
+        l2.inicializa();
+        for (int pos=0; pos<tam1; pos++)
+            l1.insercaoFinal(posicionaPont(esq + pos).getInfo());
+
+        for (int pos=0; pos<tam2; pos++)
+            l2.insercaoFinal(posicionaPont(meio + 1 + pos).getInfo());
+
+        int i=0,j=0;
+        No aux = posicionaPont(esq);
+        No aux1 = l1.inicio;
+        No aux2 = l2.inicio;
+        while (aux1!=null && aux2!=null && i < tam1 && j < tam2) {
+            if (aux1.getInfo() >= aux2.getInfo()) {
+                aux.setInfo(aux2.getInfo());
+                aux=aux.getProx();
+                aux2=aux2.getProx();
+                j++;
+            }
+            else{
+                aux.setInfo(aux1.getInfo());
+                aux=aux.getProx();
+                aux1=aux1.getProx();
+                i++;
+            }
+        }
+        while(aux1!=null && i<tam1){
+            aux.setInfo(aux1.getInfo());
+            aux=aux.getProx();
+            aux1=aux1.getProx();
+            i++;
+        }
+        while(aux2!=null && j<tam2){
+            aux.setInfo(aux2.getInfo());
+            aux=aux.getProx();
+            aux2=aux2.getProx();
+            j++;
+        }
+    }
+    public void tim(int runs){
+        int run = tamMin(runs);
+        int TL = calcTam();
+        for (int i = 0; i < TL; i += run) {
+            insercaoDiretaTim(posicionaPont(i),posicionaPont(min((i + runs - 1), (TL - 1))));
+        }
+        for (int tam = run; tam < TL; tam = 2 * tam) {
+            for (int esq = 0; esq < TL; esq += 2 * tam) {
+                int meio = esq + tam - 1;
+                int dir = min((esq + 2 * tam - 1),(TL - 1));
+                if (meio < dir)
+                    mergeTim(esq, meio, dir);
+            }
+        }
+    }
 }

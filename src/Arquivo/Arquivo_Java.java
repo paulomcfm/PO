@@ -176,6 +176,30 @@ public class Arquivo_Java {
         }
     }
 
+    public double IDcompMin(){
+        return filesize()-1;
+    }
+
+    public double IDcompMed(){
+        return ((filesize()*filesize())+filesize()-2)/4;
+    }
+
+    public double IDcompMax(){
+        return ((filesize()*filesize())+filesize()-4)/4;
+    }
+
+    public double IDmovMin(){
+        return 3*(filesize()-1);
+    }
+
+    public double IDmovMed(){
+        return ((filesize()*filesize())+9*filesize()-10)/4;
+    }
+
+    public double IDmovMax(){
+        return ((filesize()*filesize())+3*filesize()-4)/2;
+    }
+
     public void insercaoDireta(){ //inicia i no segundo elemento, enquanto i>0 e aux maior que vet[i-1] vai trocando, dps incrementa i ate tl
         Registro aux = new Registro();
         Registro ant = new Registro();
@@ -210,8 +234,27 @@ public class Arquivo_Java {
             m++;
         }
     }
-    public int calculaCompInsDir(int n){
-        return 0;
+    public double IBcompMin(){
+        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);
+    }
+
+    public double IBcompMed(){
+        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);    }
+
+    public double IBcompMax(){
+        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);
+    }
+
+    public double IBmovMin(){
+        return 3*(filesize()-1);
+    }
+
+    public double IBmovMed(){
+        return ((filesize()*filesize())+9*filesize()-10)/4;
+    }
+
+    public double IBmovMax(){
+        return ((filesize()*filesize())+3*filesize()-4)/2;
     }
     public int buscaBinaria(int chave, int tl){
         int ini=0,fim=tl-1,meio=fim/2;
@@ -272,6 +315,25 @@ public class Arquivo_Java {
             m++;
         }
     }
+
+    public double SDcompMin(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SDcompMed(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SDcompMax(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SDmovMin(){
+        return 3*(filesize()-1);
+    }
+    public double SDmovMed(){
+        return filesize() * (Math.log(filesize()) + 0.577216);
+    }
+    public double SDmovMax(){
+        return ((filesize() * filesize()) / 4) + 3 * (filesize() - 1);
+    }
     public void selecaoDireta(){ //posiciona no inicio, vai do segundo ao final procurando um menor, se achar, troca
         Registro aux = new Registro();
         Registro menor = new Registro();
@@ -301,6 +363,24 @@ public class Arquivo_Java {
             m++;
         }
     }
+    public double BBcompMin(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double BBcompMed(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double BBcompMax(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double BBmovMin(){
+        return 0;
+    }
+    public double BBmovMed(){
+        return 3 * (filesize()*filesize() - filesize()) / 2;
+    }
+    public double BBmovMax(){
+        return 3 * (filesize()*filesize() - filesize()) / 4;
+    }
     public void bubble() {
         Registro reg1 = new Registro();
         Registro reg2 = new Registro();
@@ -325,7 +405,24 @@ public class Arquivo_Java {
             tam--;
         }
     }
-
+    public double SScompMin(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SScompMed(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SScompMax(){
+        return ((filesize()*filesize())-filesize())/2;
+    }
+    public double SSmovMin(){
+        return 0;
+    }
+    public double SSmovMed(){
+        return 3 * (filesize()*filesize() - filesize()) / 2;
+    }
+    public double SSmovMax(){
+        return 3 * (filesize()*filesize() - filesize()) / 4;
+    }
     public void shake() {
         Registro reg1 = new Registro();
         Registro reg2 = new Registro();
@@ -848,5 +945,203 @@ public class Arquivo_Java {
         aux1.delete();
         aux2.delete();
     }
+    private void fusaoM(Arquivo_Java aux, int ini1, int fim1, int ini2, int fim2) {
+        Registro regi = new Registro(), regj = new Registro();
+        int i=ini1, j=ini2, k=0;
+        aux.seekArq(0);
+        while(i<=fim1 && j<=fim2){
+            seekArq(i);
+            regi.leDoArq(arquivo);
+            seekArq(j);
+            regj.leDoArq(arquivo);
+            c++;
+            if (regi.getCodigo() > regj.getCodigo()){
+                regj.gravaNoArq(aux.arquivo);
+                m++;
+                j++;
+                k++;
+            }
+            else {
+                regi.gravaNoArq(aux.arquivo);
+                m++;
+                i++;
+                k++;
+            }
+        }
+        while(i<=fim1){
+            seekArq(i);
+            regi.leDoArq(arquivo);
+            regi.gravaNoArq(aux.arquivo);
+            m++;
+            i++;
+            k++;
+        }
+        while(j<=fim2) {
+            seekArq(j);
+            regj.leDoArq(arquivo);
+            regj.gravaNoArq(aux.arquivo);
+            m++;
+            j++;
+            k++;
+        }
+        for(i=0;i<k;i++) {
+            seekArq(i+ini1);
+            aux.seekArq(i);
+            regi.leDoArq(aux.arquivo);
+            regi.gravaNoArq(arquivo);
+            m++;
+        }
+    }
 
+    private void mergeDiv(Arquivo_Java aux, int esq, int dir) {
+        int meio;
+        if(esq<dir){
+            meio=(esq+dir)/2;
+            mergeDiv(aux, esq, meio);
+            mergeDiv(aux, meio+1, dir);
+            fusaoM(aux, esq, meio, meio+1, dir);
+        }
+    }
+
+    public void mergeSort(){
+        Arquivo_Java aux = new Arquivo_Java("aux.dat");
+        mergeDiv(aux,0,filesize()-1);
+        try {
+            aux.arquivo.close();
+        }catch (Exception e){}
+        File aux2 = new File("aux.dat");
+        aux2.delete();
+    }
+
+    private int tamMin(int runs) {
+        int tam=runs;
+        int i = 0;
+        while (tam >= runs) {
+            tam /= runs;
+            i++;
+        }
+        return tam + i;
+    }
+    private void insercaoDiretaTim(int esq, int dir){
+        Registro aux = new Registro();
+        Registro ant = new Registro();
+        Registro atual;
+        int pos;
+        for (int i = esq + 1; i <= dir; i++) {
+            seekArq(i);
+            aux.leDoArq(arquivo);
+            atual=aux;
+            seekArq(i-1);
+            ant.leDoArq(arquivo);
+            pos=i;
+            c++;
+            while (pos > esq && atual.getCodigo()<ant.getCodigo()) {
+                seekArq(pos);
+                ant.gravaNoArq(arquivo);
+                m++;
+                seekArq(pos-1);
+                atual.gravaNoArq(arquivo);
+                m++;
+                pos--;
+                if(pos>esq){
+                    seekArq(pos);
+                    atual.leDoArq(arquivo);
+                    seekArq(pos-1);
+                    ant.leDoArq(arquivo);
+                }
+                c++;
+            }
+            seekArq(pos);
+            aux.gravaNoArq(arquivo);
+            m++;
+        }
+    }
+
+    private void mergeTim(int esq, int meio, int dir){
+        int tam1 = meio - esq + 1, tam2 = dir - meio;
+        Registro reg1 = new Registro();
+        Registro reg2 = new Registro();
+        Arquivo_Java arq1 = new Arquivo_Java("arq1.dat");
+        Arquivo_Java arq2 = new Arquivo_Java("arq2.dat");
+        arq1.seekArq(0);
+        arq2.seekArq(0);
+        for (int pos = 0; pos < tam1; pos++){
+            seekArq(esq+pos);
+            reg1.leDoArq(arquivo);
+            reg1.gravaNoArq(arq1.arquivo);
+            m++;
+        }
+        for (int pos = 0; pos < tam2; pos++){
+            seekArq(meio + 1 + pos);
+            reg1.leDoArq(arquivo);
+            reg1.gravaNoArq(arq2.arquivo);
+            m++;
+        }
+        int i = 0,j = 0,k = esq;
+        while (i < tam1 && j < tam2) {
+            arq1.seekArq(i);
+            reg1.leDoArq(arq1.arquivo);
+            arq2.seekArq(j);
+            reg2.leDoArq(arq2.arquivo);
+            if (reg1.getCodigo() <= reg2.getCodigo()){
+                seekArq(k);
+                reg1.gravaNoArq(arquivo);
+                m++;
+                i++;
+                k++;
+            }
+            else{
+                seekArq(k);
+                reg2.gravaNoArq(arquivo);
+                m++;
+                j++;
+                k++;
+            }
+        }
+        while (i < tam1){
+            arq1.seekArq(i);
+            reg1.leDoArq(arq1.arquivo);
+            seekArq(k);
+            reg1.gravaNoArq(arquivo);
+            m++;
+            i++;
+            k++;
+        }
+        while (j < tam2){
+            arq2.seekArq(j);
+            reg2.leDoArq(arq2.arquivo);
+            seekArq(k);
+            reg2.gravaNoArq(arquivo);
+            m++;
+            j++;
+            k++;
+        }
+        try {
+            arq1.arquivo.close();
+            arq2.arquivo.close();
+        }catch (Exception e){}
+        File aux1 = new File("arq1.dat");
+        File aux2 = new File("arq2.dat");
+        aux1.delete();
+        aux2.delete();
+    }
+    private int min(int i, int j) {
+        return (i <= j) ? i : j;
+    }
+    public void tim(int runs) {
+        int run = tamMin(runs);
+
+        for (int i = 0; i < filesize(); i += run) {
+            insercaoDiretaTim(i,min((i + runs - 1), (filesize() - 1)));
+        }
+
+        for (int tam = run; tam < filesize(); tam = 2 * tam) {
+            for (int esq = 0; esq < filesize(); esq += 2 * tam) {
+                int meio = esq + tam - 1;
+                int dir = min((esq + 2 * tam - 1),(filesize() - 1));
+                if (meio < dir)
+                    mergeTim(esq, meio, dir);
+            }
+        }
+    }
 }
