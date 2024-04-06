@@ -463,10 +463,10 @@ public class Lista {
                 j=j.getAnt();
             }
         }
-        if(estaAntes(ini,i.getAnt()) && i!=null)
-            quickSP(ini,i);
-        if(estaAntes(j.getProx(),fim) && j!=null)
-            quickSP(j,fim);
+        if(estaAntes(ini,j) && i!=null)
+            quickCP(ini,j);
+        if(estaAntes(i,fim) && j!=null)
+            quickCP(i,fim);
     }
 
 

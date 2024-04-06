@@ -682,7 +682,7 @@ public class Main {
 //        vetores();
 //        listas();
 //        arquivos();
-        arquivotxt();
+//        arquivotxt();
     }
 
     private static void arquivotxt() {

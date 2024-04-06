@@ -39,7 +39,7 @@ public class Vetor {
         return meio;
     }
 
-    public void insercaoDireta(){ //posiciona o i no segundo elemento e vai trocando pelos da esquerda enquanto > 0 e aux menor, depois incrementa o i
+    public void insercaoDireta(){
         int pos, aux;
         for(int i=1;i<TL;i++){
             aux=vet[i];
@@ -52,7 +52,7 @@ public class Vetor {
         }
     }
 
-    public void insercaoBinaria(){ //posiciona o i no segundo elemento e busca a pos, enquanto j>pos vai remanejando e coloca o aux, depois incrementa o i
+    public void insercaoBinaria(){
         int pos, aux;
         for(int i=1;i<TL;i++){
             aux=vet[i];
@@ -63,7 +63,7 @@ public class Vetor {
         }
     }
 
-    public void selecaoDireta(){ // posiciona no primeiro elemento e anda do segundo até o final salvando a pos do menor, dps troca
+    public void selecaoDireta(){
         int posmenor,aux;
         for(int i=0; i<TL-1;i++){
             posmenor=i;
@@ -76,7 +76,7 @@ public class Vetor {
         }
     }
 
-    public void bubble(){ //define um TL2=TL-1 e vai trocando i com os vizinhos até TL2=1 ou nao trocou
+    public void bubble(){
         int TL2=TL-1,aux;
         boolean troca=true;
         while(TL2>1 && troca){
@@ -93,7 +93,7 @@ public class Vetor {
         }
     }
 
-    public void shake(){ //define ini=0 e fim=tl-1, enquanto ini<fim anda jogando os maiores pra direta e decrementa o fim, dps anda jogando menores pra esquerda e decrementa ini
+    public void shake(){
         int aux, inicio=0, fim=TL-1;
         boolean troca=true;
         while(inicio < fim && troca){
@@ -121,7 +121,7 @@ public class Vetor {
         }
     }
 
-    public void heap(){ //TL2=TL, enquanto tl2>1, define pai = tl2/2-1, enquanto pai>=0, ve qual o maior filho, coloca no lugar do pai
+    public void heap(){
         int TL2 = TL,pai,FE, FD, maiorF,aux;
         while(TL2>1){ //TL/2 = qtd de pais
             pai=TL2/2-1;
@@ -145,7 +145,7 @@ public class Vetor {
         }
     }
 
-    public void shell(){ //calcula a distancia, enquanto for >0, compara j com j-dist, se for menor troca e j assume j-dist
+    public void shell(){
         int i,j,aux,dist=1;
         while(dist<TL)
             dist=dist*3+1;
@@ -164,7 +164,7 @@ public class Vetor {
         }
     }
 
-    public void counting(){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
+    public void counting(){
         int maior=vet[0];
         for(int i=1;i<TL;i++)
             if(vet[i]>maior)
@@ -228,7 +228,7 @@ public class Vetor {
                 j--;
             }
         }
-        if(ini<i)
+        if(ini<j)
             quickCP(ini,j);
         if(i<fim)
             quickCP(i, fim);
@@ -261,7 +261,7 @@ public class Vetor {
             j++;
         }
     }
-    private void countingRadix(int chave){ //procura maior, conta e coloca no cont[max+1], dps coloca na no saida[tl] na pos[cont[vet[i]-1]] e decrementa cont
+    private void countingRadix(int chave){
         int maior=vet[0], index;
         for(int i=1;i<TL;i++)
             if(vet[i]>maior)

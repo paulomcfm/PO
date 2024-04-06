@@ -694,7 +694,7 @@ public class Arquivo_Java {
                 j--;
             }
         }
-        if(ini<i)
+        if(ini<j)
             quickCP(ini,j);
         if(i<fim)
             quickCP(i, fim);
