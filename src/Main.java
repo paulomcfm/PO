@@ -679,7 +679,7 @@ public class Main {
         //GRAVA NO ARQ TXT
     }
     public static void main(String[] args) {
-//        vetores();
+        vetores();
 //        listas();
 //        arquivos();
 //        arquivotxt();

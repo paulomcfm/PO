@@ -295,7 +295,7 @@ public class Vetor {
         int gap = TL;
         boolean troca = true;
         while (gap > 1 || troca) {
-            gap = (int) (gap*1.3);
+            gap = (int) (gap/1.3);
             if(gap<1)
                 gap=1;
             troca = false;
