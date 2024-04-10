@@ -189,8 +189,8 @@ public class Lista {
                 }
                 aux=aux.getProx();
             }
+            ultima=ultima.getAnt();
         }
-        ultima=ultima.getAnt();
     }
 
     public void shake() {
