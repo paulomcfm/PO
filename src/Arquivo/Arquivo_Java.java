@@ -235,14 +235,14 @@ public class Arquivo_Java {
         }
     }
     public double IBcompMin(){
-        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);
+        return filesize() * (Math.log(filesize()) - Math.log(Math.E) + 0.5);
     }
 
     public double IBcompMed(){
-        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);    }
+        return filesize() * (Math.log(filesize()) - Math.log(Math.E) + 0.5);    }
 
     public double IBcompMax(){
-        return filesize() * (Math.log(filesize()) - Math.log(2.71828) + 0.5);
+        return filesize() * (Math.log(filesize()) - Math.log(Math.E) + 0.5);
     }
 
     public double IBmovMin(){
@@ -1004,7 +1004,7 @@ public class Arquivo_Java {
     }
 
     public void mergeSort(){
-        Arquivo_Java aux = new Arquivo_Java("aux.dat");
+        Arquivo_Java aux = new Arquivo_Java("./arqAux.dat");
         mergeDiv(aux,0,filesize()-1);
         try {
             aux.arquivo.close();
@@ -1083,6 +1083,7 @@ public class Arquivo_Java {
             reg1.leDoArq(arq1.arquivo);
             arq2.seekArq(j);
             reg2.leDoArq(arq2.arquivo);
+            c++;
             if (reg1.getCodigo() <= reg2.getCodigo()){
                 seekArq(k);
                 reg1.gravaNoArq(arquivo);
