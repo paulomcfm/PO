@@ -1009,7 +1009,7 @@ public class Arquivo_Java {
         try {
             aux.arquivo.close();
         }catch (Exception e){}
-        File aux2 = new File("aux.dat");
+        File aux2 = new File("arqAux.dat");
         aux2.delete();
     }
 

@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 
 public class Registro
 {
-    public final int tf=1;
+    public final int tf=1022;
 
     public Registro() {
 
@@ -63,7 +63,7 @@ public class Registro
         //char lixo[] = new char[tf]; 2044 bytes
         //--------------------------------------
         // 2048 bytes
-        return(6);
+        return(2048);
     }
 
     public void exibirReg() {
